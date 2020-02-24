@@ -1,5 +1,5 @@
 // =====================================================
-// Projekt: unicode-tools
+// Projekt: heike2718/unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
