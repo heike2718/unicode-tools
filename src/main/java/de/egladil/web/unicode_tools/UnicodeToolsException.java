@@ -1,5 +1,5 @@
-// =====================================================
-// Projekt: heike2718/unicode-tools
+//=====================================================
+// Projekt: unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
@@ -21,36 +21,28 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// =====================================================
+//=====================================================
 
 package de.egladil.web.unicode_tools;
 
-import java.util.function.Function;
-
-import org.apache.commons.text.translate.UnicodeUnescaper;
-
 /**
- * CodePointsToUnicodeCharTranslator translates a Unicode code point into the
- * displayable litaral Strings.<br>
- * <br>
- * <strong>Example:</strong> The code point "0054 0308" is mapped to "T̈"
- *
+ * UnicodeToolsException
  */
-public class CodePointsToUnicodeCharTranslator implements Function<UnicodeCodePointsProvider, String> {
+public class UnicodeToolsException extends RuntimeException {
 
-	private final UnicodeUnescaper unicodeUnescaper = new UnicodeUnescaper();
+	/* serialVersionUID */
+	private static final long serialVersionUID = 1L;
 
-	@Override
-	public String apply(UnicodeCodePointsProvider codePointsProvider) {
+	/**
+	 * UnicodeToolsException
+	 */
+	public UnicodeToolsException(String message, Throwable cause) {
+	}
 
-		if (codePointsProvider == null) {
-			throw new IllegalArgumentException("codePointsProvider must not be null");
-		}
-
-		final CodePointsToUnicodeMapper codePointMapper = new CodePointsToUnicodeMapper(
-				codePointsProvider.getSeparationChar());
-
-		return unicodeUnescaper.translate(codePointMapper.apply(codePointsProvider.getCodePoints()));
+	/**
+	 * UnicodeToolsException
+	 */
+	public UnicodeToolsException(String message) {
 	}
 
 }

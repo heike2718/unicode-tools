@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<completeEgladilCharset>
+	<char>
+		<codePoint>0041</codePoint>
+	</char>
+	<char>
+		<codePoint>0041 030B</codePoint>
+	</char>
+	<char>
+		<codePoint>0042</codePoint>
+	</char>
+	<char>
+		<codePoint>0043</codePoint>
+	</char>
+	<char>
+		<codePoint>0043 0300</codePoint>
+	</char>
+	<char>
+		<codePoint>0043 0304</codePoint>
+	</char>
+</completeEgladilCharset>

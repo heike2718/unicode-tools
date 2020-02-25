@@ -1,5 +1,5 @@
-// =====================================================
-// Projekt: heike2718/unicode-tools
+//=====================================================
+// Projekt: unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
@@ -21,36 +21,40 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// =====================================================
+//=====================================================
 
 package de.egladil.web.unicode_tools;
 
-import java.util.function.Function;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import org.apache.commons.text.translate.UnicodeUnescaper;
+import java.io.InputStream;
+
+import org.junit.jupiter.api.Test;
+
+import de.egladil.web.unicode_tools.impl.DefaultUnicodeSubset;
+import de.egladil.web.unicode_tools.impl.DefaultUnicodeSubsetBuilder;
 
 /**
- * CodePointsToUnicodeCharTranslator translates a Unicode code point into the
- * displayable litaral Strings.<br>
- * <br>
- * <strong>Example:</strong> The code point "0054 0308" is mapped to "T̈"
- *
+ * DefaultUnicodeSubsetBuilderTest
  */
-public class CodePointsToUnicodeCharTranslator implements Function<UnicodeCodePointsProvider, String> {
+public class DefaultUnicodeSubsetBuilderTest {
 
-	private final UnicodeUnescaper unicodeUnescaper = new UnicodeUnescaper();
+	@Test
+	void should_buildACompleteSubset_when_default() throws Exception {
 
-	@Override
-	public String apply(UnicodeCodePointsProvider codePointsProvider) {
+		try (InputStream in = getClass().getResourceAsStream("/veryShortCharset.xml")) {
+			// Act
+			DefaultUnicodeSubset subset = new DefaultUnicodeSubsetBuilder().build(in);
 
-		if (codePointsProvider == null) {
-			throw new IllegalArgumentException("codePointsProvider must not be null");
+            // Assert
+			assertNotNull(subset);
+
+			assertNotNull(subset.getCharacters());
+
+			assertEquals(6, subset.getCharacters().size());
 		}
 
-		final CodePointsToUnicodeMapper codePointMapper = new CodePointsToUnicodeMapper(
-				codePointsProvider.getSeparationChar());
-
-		return unicodeUnescaper.translate(codePointMapper.apply(codePointsProvider.getCodePoints()));
 	}
 
 }
