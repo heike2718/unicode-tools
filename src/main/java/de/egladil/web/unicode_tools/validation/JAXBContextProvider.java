@@ -1,5 +1,5 @@
-// =====================================================
-// Projekt: heike2718/unicode-tools
+//=====================================================
+// Projekt: unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
@@ -21,36 +21,38 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// =====================================================
+//=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.validation;
 
-import java.util.function.Function;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 
-import org.apache.commons.text.translate.UnicodeUnescaper;
+import de.egladil.web.unicode_tools.impl.DefaultUnicodeSubset;
 
 /**
- * CodePointsToUnicodeCharTranslator translates a Unicode code point into the
- * displayable litaral Strings.<br>
- * <br>
- * <strong>Example:</strong> The code point "0054 0308" is mapped to "T̈"
- *
+ * JAXBContextProvider provides the complete JAXBContext for all known
+ * XMLRootElement annotated classes.
  */
-public class CodePointsToUnicodeCharTranslator implements Function<UnicodeCodePointsProvider, String> {
+public final class JAXBContextProvider {
 
-	private final UnicodeUnescaper unicodeUnescaper = new UnicodeUnescaper();
+	// JAXBContext ist Thread-safe.
+	private static JAXBContext JAXBCONTEXT;
 
-	@Override
-	public String apply(UnicodeCodePointsProvider codePointsProvider) {
-
-		if (codePointsProvider == null) {
-			throw new IllegalArgumentException("codePointsProvider must not be null");
-		}
-
-		final CodePointsToUnicodeMapper codePointMapper = new CodePointsToUnicodeMapper(
-				codePointsProvider.getSeparationChar());
-
-		return unicodeUnescaper.translate(codePointMapper.apply(codePointsProvider.getCodePoints()));
+	private JAXBContextProvider() {
 	}
 
+	/**
+	 * Provides the complete JAXBContext. In order to minimize performance issues
+	 * this is created only at first call. It is threadSafe
+	 *
+	 * @return JAXBContext
+	 * @throws JAXBException
+	 */
+	public static JAXBContext getJACBContext() throws JAXBException {
+		if (JAXBCONTEXT == null) {
+			JAXBCONTEXT = JAXBContext.newInstance(new Class[] { DefaultUnicodeSubset.class });
+		}
+		return JAXBCONTEXT;
+	}
 }

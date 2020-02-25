@@ -1,5 +1,5 @@
-// =====================================================
-// Projekt: heike2718/unicode-tools
+//=====================================================
+// Projekt: unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
@@ -21,36 +21,37 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// =====================================================
+//=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.validation;
 
-import java.util.function.Function;
+import java.io.IOException;
+import java.io.InputStream;
 
-import org.apache.commons.text.translate.UnicodeUnescaper;
+import javax.xml.bind.JAXBException;
+
+import de.egladil.web.unicode_tools.UnicodeSubset;
+import de.egladil.web.unicode_tools.UnicodeToolsException;
+import de.egladil.web.unicode_tools.impl.DefaultUnicodeSubsetBuilder;
 
 /**
- * CodePointsToUnicodeCharTranslator translates a Unicode code point into the
- * displayable litaral Strings.<br>
- * <br>
- * <strong>Example:</strong> The code point "0054 0308" is mapped to "T̈"
- *
+ * TestCharsetValidator
  */
-public class CodePointsToUnicodeCharTranslator implements Function<UnicodeCodePointsProvider, String> {
+public class TestCharsetValidator extends AbstractUnicodeSubsetValidator<TestUnicodeString, String> {
 
-	private final UnicodeUnescaper unicodeUnescaper = new UnicodeUnescaper();
+	private static final String UNICODE_WHITELIST_XML = "/testCharset.xml";
 
 	@Override
-	public String apply(UnicodeCodePointsProvider codePointsProvider) {
+	protected UnicodeSubset getAllowedUnicodeSubset() {
 
-		if (codePointsProvider == null) {
-			throw new IllegalArgumentException("codePointsProvider must not be null");
+		try (InputStream in = getClass().getResourceAsStream(UNICODE_WHITELIST_XML)) {
+
+			return new DefaultUnicodeSubsetBuilder().build(in);
+
+		} catch (IOException e) {
+			throw new UnicodeToolsException("resource " + UNICODE_WHITELIST_XML + " is not present");
+		} catch (JAXBException e) {
+			throw new UnicodeToolsException("could not unmarshall " + UNICODE_WHITELIST_XML + ": " + e.getMessage(), e);
 		}
-
-		final CodePointsToUnicodeMapper codePointMapper = new CodePointsToUnicodeMapper(
-				codePointsProvider.getSeparationChar());
-
-		return unicodeUnescaper.translate(codePointMapper.apply(codePointsProvider.getCodePoints()));
 	}
-
 }

@@ -1,5 +1,5 @@
-// =====================================================
-// Projekt: heike2718/unicode-tools
+//=====================================================
+// Projekt: unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
@@ -21,36 +21,41 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// =====================================================
+//=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.impl;
 
-import java.util.function.Function;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
-import org.apache.commons.text.translate.UnicodeUnescaper;
+import de.egladil.web.unicode_tools.UnicodeCodePointsProvider;
 
 /**
- * CodePointsToUnicodeCharTranslator translates a Unicode code point into the
- * displayable litaral Strings.<br>
- * <br>
- * <strong>Example:</strong> The code point "0054 0308" is mapped to "T̈"
- *
+ * DefaultCodePointsProvider class matching the
+ * /src/main/resources/unicodeWhitelist.xml schema.
  */
-public class CodePointsToUnicodeCharTranslator implements Function<UnicodeCodePointsProvider, String> {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class DefaultCodePointsProvider implements UnicodeCodePointsProvider {
 
-	private final UnicodeUnescaper unicodeUnescaper = new UnicodeUnescaper();
+	@XmlElement(name = "codePoint")
+	private String codePoints;
 
 	@Override
-	public String apply(UnicodeCodePointsProvider codePointsProvider) {
+	public String getCodePoints() {
+		return codePoints;
+	}
 
-		if (codePointsProvider == null) {
-			throw new IllegalArgumentException("codePointsProvider must not be null");
-		}
+	@Override
+	public char getSeparationChar() {
+		return DEFAULT_SEPARATION_CHAR;
+	}
 
-		final CodePointsToUnicodeMapper codePointMapper = new CodePointsToUnicodeMapper(
-				codePointsProvider.getSeparationChar());
-
-		return unicodeUnescaper.translate(codePointMapper.apply(codePointsProvider.getCodePoints()));
+	/**
+	 * @param codePoints the codePoints to set
+	 */
+	public void setCodePoints(String codePoints) {
+		this.codePoints = codePoints;
 	}
 
 }
