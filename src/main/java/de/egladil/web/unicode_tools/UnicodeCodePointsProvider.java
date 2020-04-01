@@ -29,6 +29,7 @@ package de.egladil.web.unicode_tools;
  * UnicodeCodePointsProvider
  *
  */
+@Deprecated
 public interface UnicodeCodePointsProvider {
 
 	char DEFAULT_SEPARATION_CHAR = ' ';

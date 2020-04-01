@@ -1,5 +1,5 @@
-// =====================================================
-// Projekt: heike2718/unicode-tools
+//=====================================================
+// Projekt: unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
@@ -21,25 +21,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// =====================================================
+//=====================================================
 
 package de.egladil.web.unicode_tools;
 
-import java.util.List;
-
 /**
- * UnicodeSubset
- *
+ * ValidationProvider checks if some givenCharacter is valid with respect to a
+ * given CharacterSet.
  */
-@Deprecated
-public interface UnicodeSubset {
+public interface ValidationProvider {
 
 	/**
-	 * Provides a List of UnicodeCodePointsProvider that usually should be a Subset
-	 * of Unicode.
+	 * Decides if the givenPrintableCharacter is valid.
 	 *
-	 * @return List
+	 * @param givenPrintableCharacter
+	 * @return boolean
 	 */
-	List<UnicodeCodePointsProvider> getCharacters();
+	boolean isValid(String givenPrintableCharacter);
+
+
+	/**
+	 * Decides if the givenPrintableCharacter is valid.
+	 *
+	 * @param givenPrintableCharacter
+	 * @return boolean
+	 */
+	boolean isValid(UTF8Codepoint codePoint);
 
 }

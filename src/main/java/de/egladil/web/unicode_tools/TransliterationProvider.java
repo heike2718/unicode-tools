@@ -1,5 +1,5 @@
-// =====================================================
-// Projekt: heike2718/unicode-tools
+//=====================================================
+// Projekt: unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
@@ -21,25 +21,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// =====================================================
+//=====================================================
 
 package de.egladil.web.unicode_tools;
 
-import java.util.List;
-
 /**
- * UnicodeSubset
- *
+ * TransliterationProvider provides some sort of transliteration for some
+ * Character into another Character.
  */
-@Deprecated
-public interface UnicodeSubset {
+public interface TransliterationProvider {
 
 	/**
-	 * Provides a List of UnicodeCodePointsProvider that usually should be a Subset
-	 * of Unicode.
+	 * Returns the transliteration as printable String of length 1 to which the
+	 * givenPrintableCharacter will be mapped according to the mapping that is
+	 * defined by some CharcterSet.
 	 *
-	 * @return List
+	 * @param givenPrintableCharacter String
+	 * @return String or null, if givenPrintableCharacter is not contained.
 	 */
-	List<UnicodeCodePointsProvider> getCharacters();
+	String printableTransliteratedCharacter(String givenPrintableCharacter);
+
+	/**
+	 * Gibt den Namen zurück fürs Logging.
+	 *
+	 * @return String
+	 */
+	String name();
 
 }
