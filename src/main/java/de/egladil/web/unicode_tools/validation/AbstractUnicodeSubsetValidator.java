@@ -28,9 +28,7 @@ package de.egladil.web.unicode_tools.validation;
 import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -38,10 +36,6 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.StringUtils;
-
-import de.egladil.web.unicode_tools.CodePointsToUnicodeCharTranslator;
-import de.egladil.web.unicode_tools.UnicodeCodePointsProvider;
-import de.egladil.web.unicode_tools.UnicodeSubset;
 
 /**
  * typAbstractUnicodeSubsetValidator
@@ -64,6 +58,7 @@ public abstract class AbstractUnicodeSubsetValidator<A extends Annotation, T> im
 
 			return false;
 		}
+
 		String strValue = (String) value;
 
 		if (strValue.isEmpty()) {
@@ -71,21 +66,17 @@ public abstract class AbstractUnicodeSubsetValidator<A extends Annotation, T> im
 			return true;
 		}
 
-		final List<UnicodeCodePointsProvider> allowedCharacters = getAllowedUnicodeSubset().getCharacters();
 
-		Set<String> unallowedSubstrings = new HashSet<String>();
+		ValidationProvider validationProvider = getValidationProvider();
+
+		Set<String> unallowedSubstrings = new HashSet<>();
 
 		for (int i = 0; i < strValue.length(); i++) {
-			String substr = strValue.substring(i, i + 1);
 
-//			System.out.println("check " + substr);
-
-			Optional<UnicodeCodePointsProvider> optMatch = findMatch(substr, allowedCharacters);
-
-			if (!optMatch.isPresent()) {
-				unallowedSubstrings.add(substr);
+			String letter = strValue.charAt(i) + "";
+			if (!validationProvider.isPrintableCharacterValid(letter)) {
+				unallowedSubstrings.add(letter);
 			}
-
 		}
 
 		if (!unallowedSubstrings.isEmpty()) {
@@ -103,11 +94,5 @@ public abstract class AbstractUnicodeSubsetValidator<A extends Annotation, T> im
 		return true;
 	}
 
-	private Optional<UnicodeCodePointsProvider> findMatch(String substring, List<UnicodeCodePointsProvider> allowedCharacters) {
-		final CodePointsToUnicodeCharTranslator translator = new CodePointsToUnicodeCharTranslator();
-
-		return allowedCharacters.stream().filter(uc -> substring.equals(translator.apply(uc)) ).findAny();
-	}
-
-	protected abstract UnicodeSubset getAllowedUnicodeSubset();
+	protected abstract ValidationProvider getValidationProvider();
 }

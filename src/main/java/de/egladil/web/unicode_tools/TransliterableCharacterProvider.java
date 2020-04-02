@@ -23,48 +23,27 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.impl;
-
-import java.io.InputStream;
-
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
-import de.egladil.web.unicode_tools.validation.JAXBContextProvider;
+package de.egladil.web.unicode_tools;
 
 /**
- * DefaultUnicodeSubsetBuilder creates a DefaultUnicodeSubset from an xml
- * resource.
+ * TransliterableCharacterProvider encapsulates the methods required for mapping
+ * of some CharacterSet Character into a TransliterableUTF8Character.
  */
-public class DefaultUnicodeSubsetBuilder {
+public interface TransliterableCharacterProvider {
 
 	/**
-	 * DefaultUnicodeSubsetBuilder
+	 * @return char the character serving as separatoin in combined code points.
 	 */
-	public DefaultUnicodeSubsetBuilder() {
-	}
+	char getSeparationChar();
 
 	/**
-	 *
-	 * @param unicodeXmlInputStream InputStream the caller is responsible for
-	 *                              closing.
-	 * @return DefaultUnicodeSubset
-	 * @throws JAXBException            in case of Annotation errors
-	 * @throws IllegalArgumentException when xml cannot be cast to
-	 *                                  DefaultUnicodeSubset
+	 * @return String the code point of some CharacterSet element
 	 */
-	public DefaultUnicodeSubset build(InputStream unicodeXmlInputStream)
-			throws JAXBException, IllegalArgumentException {
+	String getCodePoint();
 
-		Unmarshaller unmarshaller = JAXBContextProvider.getJACBContext().createUnmarshaller();
-
-		Object obj = unmarshaller.unmarshal(unicodeXmlInputStream);
-
-		if (!(obj instanceof DefaultUnicodeSubset)) {
-			throw new IllegalArgumentException("provided xml is not valid for DefaultUnicodeSubset");
-		}
-
-		return (DefaultUnicodeSubset) obj;
-	}
-
+	/**
+	 * @return String the code point of some CharacterSet element that serves as
+	 *         transliteration for the original codePont.
+	 */
+	String getMapping();
 }

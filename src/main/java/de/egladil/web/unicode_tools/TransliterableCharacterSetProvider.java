@@ -23,35 +23,24 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.validation;
+package de.egladil.web.unicode_tools;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.xml.bind.JAXBException;
-
-import de.egladil.web.unicode_tools.UnicodeSubset;
-import de.egladil.web.unicode_tools.UnicodeToolsException;
-import de.egladil.web.unicode_tools.impl.DefaultUnicodeSubsetBuilder;
+import java.util.List;
 
 /**
- * TestCharsetValidator
+ * TransliterableCharacterSetProvider encapsulates the methods required for
+ * mapping of some Collection of TransliterableCharacterProviders into a
+ * TransliterableUTF8CharacterSet.
  */
-public class TestCharsetValidator extends AbstractUnicodeSubsetValidator<TestUnicodeString, String> {
+public interface TransliterableCharacterSetProvider {
 
-	private static final String UNICODE_WHITELIST_XML = "/testCharset.xml";
+	/**
+	 * @return String the name.
+	 */
+	String getName();
 
-	@Override
-	protected UnicodeSubset getAllowedUnicodeSubset() {
-
-		try (InputStream in = getClass().getResourceAsStream(UNICODE_WHITELIST_XML)) {
-
-			return new DefaultUnicodeSubsetBuilder().build(in);
-
-		} catch (IOException e) {
-			throw new UnicodeToolsException("resource " + UNICODE_WHITELIST_XML + " is not present");
-		} catch (JAXBException e) {
-			throw new UnicodeToolsException("could not unmarshall " + UNICODE_WHITELIST_XML + ": " + e.getMessage(), e);
-		}
-	}
+	/**
+	 * @return List the items
+	 */
+	List<TransliterableCharacterProvider> getItems();
 }

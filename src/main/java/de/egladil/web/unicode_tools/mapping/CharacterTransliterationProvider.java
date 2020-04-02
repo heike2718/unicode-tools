@@ -23,38 +23,28 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.InputStream;
-
-import org.junit.jupiter.api.Test;
-
-import de.egladil.web.unicode_tools.impl.DefaultUnicodeSubset;
-import de.egladil.web.unicode_tools.impl.DefaultUnicodeSubsetBuilder;
+package de.egladil.web.unicode_tools.mapping;
 
 /**
- * DefaultUnicodeSubsetBuilderTest
+ * CharacterTransliterationProvider provides some sort of transliteration for some
+ * Character into another Character.
  */
-public class DefaultUnicodeSubsetBuilderTest {
+public interface CharacterTransliterationProvider {
 
-	@Test
-	void should_buildACompleteSubset_when_default() throws Exception {
+	/**
+	 * Returns the transliteration as printable String of length 1 to which the
+	 * givenPrintableCharacter will be mapped according to the mapping that is
+	 * defined by some CharcterSet.
+	 *
+	 * @param givenPrintableCharacter String
+	 * @return String or null, if givenPrintableCharacter is not contained.
+	 */
+	String printableTransliteratedCharacter(String givenPrintableCharacter);
 
-		try (InputStream in = getClass().getResourceAsStream("/veryShortCharset.xml")) {
-			// Act
-			DefaultUnicodeSubset subset = new DefaultUnicodeSubsetBuilder().build(in);
-
-            // Assert
-			assertNotNull(subset);
-
-			assertNotNull(subset.getCharacters());
-
-			assertEquals(6, subset.getCharacters().size());
-		}
-
-	}
-
+	/**
+	 * Gibt den Namen zurück fürs Logging.
+	 *
+	 * @return String
+	 */
+	String name();
 }

@@ -27,6 +27,8 @@ package de.egladil.web.unicode_tools;
 
 import org.apache.commons.text.translate.UnicodeUnescaper;
 
+import de.egladil.web.unicode_tools.internal.CodePointsToUnicodeMapper;
+
 /**
  * UTF8Codepoint is a ValueObject that codes a Charset codepoint with respect to
  * the UTF-8 charset. The default separation char between the sequence of 4digit
@@ -70,9 +72,9 @@ public class UTF8Codepoint {
 	 */
 	public String utf8() {
 		final UnicodeUnescaper unicodeUnescaper = new UnicodeUnescaper();
-		final CodePointsToUnicodeMapper codePointMapper = new CodePointsToUnicodeMapper(this.separationChar);
+		final CodePointsToUnicodeMapper codePointMapper = new CodePointsToUnicodeMapper();
 
-		String unicodeChars = codePointMapper.apply(codePoints);
+		String unicodeChars = codePointMapper.apply(this);
 		return unicodeUnescaper.translate(unicodeChars);
 	}
 

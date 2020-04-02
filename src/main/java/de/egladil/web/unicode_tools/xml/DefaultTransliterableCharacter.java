@@ -1,5 +1,5 @@
-// =====================================================
-// Projekt: heike2718/unicode-tools
+//=====================================================
+// Projekt: unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
@@ -21,48 +21,40 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// =====================================================
+//=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.xml;
 
-import static org.junit.Assert.assertEquals;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
-import org.junit.jupiter.api.Test;
-
-import de.egladil.web.unicode_tools.CodePointsToUnicodeMapper;
+import de.egladil.web.unicode_tools.TransliterableCharacterProvider;
 
 /**
- * CodePointsToUnicodeMapperTest
- *
+ * DefaultTransliterableCharacter
  */
-public class CodePointsToUnicodeMapperTest {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class DefaultTransliterableCharacter implements TransliterableCharacterProvider {
 
-	@Test
-	void should_TransformStringCorrectly_when_SeparatedByOneSpace() {
+	@XmlElement
+	private String codePoint;
 
-		// Arrange
-		String string = "0054 0308";
-		String expected = "\\u0054\\u0308";
+	@XmlElement
+	private String mapping;
 
-		// Act
-		String transformed = new CodePointsToUnicodeMapper().apply(string);
-
-		// Assert
-		assertEquals(expected, transformed);
+	@Override
+	public String getCodePoint() {
+		return codePoint;
 	}
 
-	@Test
-	void should_TransformStringCorrectly_when_NonDefaultSeparationCharGiven() {
-
-		// Arrange
-		String string = "0054;0308";
-		String expected = "\\u0054\\u0308";
-
-		// Act
-		String transformed = new CodePointsToUnicodeMapper(';').apply(string);
-
-		// Assert
-		assertEquals(expected, transformed);
+	@Override
+	public String getMapping() {
+		return mapping;
 	}
 
+	@Override
+	public char getSeparationChar() {
+		return ' ';
+	}
 }

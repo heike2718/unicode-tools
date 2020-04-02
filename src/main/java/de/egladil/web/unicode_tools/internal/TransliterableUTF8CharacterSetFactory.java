@@ -23,7 +23,7 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.validation;
+package de.egladil.web.unicode_tools.internal;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,19 +32,19 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import de.egladil.web.unicode_tools.TransliterableUTF8CharacterSet;
-import de.egladil.web.unicode_tools.annotations.DefaultUnicodeString;
 import de.egladil.web.unicode_tools.exceptions.UnicodeToolsException;
+import de.egladil.web.unicode_tools.validation.JAXBContextProvider;
 import de.egladil.web.unicode_tools.xml.DefaultTransliterableCharacterSet;
 
 /**
- * DefaultUnicodeStringValidator
+ * TransliterableUTF8CharacterSetFactory creates a TransliterableUTF8CharacterSet
  */
-public class DefaultUnicodeStringValidator extends AbstractUnicodeSubsetValidator<DefaultUnicodeString, String> {
+public class TransliterableUTF8CharacterSetFactory {
 
 	private static final String UNICODE_WHITELIST_XML = "/defaultTransliterableCharacterSet.xml";
 
-	@Override
-	protected ValidationProvider getValidationProvider() {
+	public TransliterableUTF8CharacterSet createCharacterSet() {
+
 		try (InputStream in = getClass().getResourceAsStream(UNICODE_WHITELIST_XML)) {
 
 			Unmarshaller unmarshaller = JAXBContextProvider.getJACBContext().createUnmarshaller();

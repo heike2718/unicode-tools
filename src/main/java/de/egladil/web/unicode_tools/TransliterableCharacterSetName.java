@@ -68,14 +68,7 @@ public class TransliterableCharacterSetName {
 			return false;
 		}
 		TransliterableCharacterSetName other = (TransliterableCharacterSetName) obj;
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		} else if (!name.equals(other.name)) {
-			return false;
-		}
-		return true;
+		return name.equals(other.name);
 	}
 
 	@Override

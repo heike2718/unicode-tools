@@ -23,35 +23,41 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.validation;
+package de.egladil.web.unicode_tools.xml;
 
-import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
-import static java.lang.annotation.ElementType.CONSTRUCTOR;
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import de.egladil.web.unicode_tools.TransliterableCharacterProvider;
+import de.egladil.web.unicode_tools.TransliterableCharacterSetProvider;
 
 /**
- * TestUnicodeString allowes only Strings based on latin letters, whitespace and special
- * characters like $, +, # etc. Basis is testCharset.xml
+ * DefaultTransliterableCharacterSet
  */
-@Documented
-@Retention(RUNTIME)
-@Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
-@Constraint(validatedBy = { TestCharsetValidator.class })
-public @interface TestUnicodeString {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class DefaultTransliterableCharacterSet implements TransliterableCharacterSetProvider {
 
-	String message() default "{de.egladil.web.unicode_tools.invalidChars}";
+	@XmlElement
+	private String name;
 
-	Class<?>[] groups() default {};
+	@XmlElement(name = "character")
+	private List<DefaultTransliterableCharacter> transliterableCharacters;
 
-	Class<? extends Payload>[] payload() default {};
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	public List<TransliterableCharacterProvider> getItems() {
+		List<TransliterableCharacterProvider> result = new ArrayList<>();
+		result.addAll(transliterableCharacters);
+		return result;
+	}
+
 }

@@ -23,39 +23,26 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.impl;
+package de.egladil.web.unicode_tools.internal;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import static org.junit.Assert.assertNotNull;
 
-import de.egladil.web.unicode_tools.UnicodeCodePointsProvider;
+import org.junit.jupiter.api.Test;
+
+import de.egladil.web.unicode_tools.TransliterableUTF8CharacterSet;
 
 /**
- * DefaultCodePointsProvider class matching the
- * /src/main/resources/unicodeWhitelist.xml schema.
+ * TransliterableUTF8CharacterSetFactoryTest
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class DefaultCodePointsProvider implements UnicodeCodePointsProvider {
+public class TransliterableUTF8CharacterSetFactoryTest {
 
-	@XmlElement(name = "codePoint")
-	private String codePoints;
+	@Test
+	void should_Create() {
 
-	@Override
-	public String getCodePoints() {
-		return codePoints;
-	}
+		TransliterableUTF8CharacterSet result = new TransliterableUTF8CharacterSetFactory().createCharacterSet();
 
-	@Override
-	public char getSeparationChar() {
-		return DEFAULT_SEPARATION_CHAR;
-	}
+		assertNotNull(result);
 
-	/**
-	 * @param codePoints the codePoints to set
-	 */
-	public void setCodePoints(String codePoints) {
-		this.codePoints = codePoints;
 	}
 
 }

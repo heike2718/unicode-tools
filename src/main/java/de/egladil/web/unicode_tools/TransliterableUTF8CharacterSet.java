@@ -29,11 +29,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import de.egladil.web.unicode_tools.mapping.CharacterTransliterationProvider;
+import de.egladil.web.unicode_tools.validation.ValidationProvider;
 
 /**
- * TransliterableUTF8CharacterSet
+ * TransliterableUTF8CharacterSet is a collection of
+ * TransliterableUTF8Characters. Two TransliterableUTF8CharacterSet are equal
+ * when their names are equal. It provides a transliteration from one printable
+ * character into another printable character.
  */
-public class TransliterableUTF8CharacterSet implements TransliterationProvider, ValidationProvider {
+public class TransliterableUTF8CharacterSet implements CharacterTransliterationProvider, ValidationProvider {
 
 	private final TransliterableCharacterSetName name;
 
@@ -47,13 +54,58 @@ public class TransliterableUTF8CharacterSet implements TransliterationProvider, 
 	 * @param name String
 	 */
 	TransliterableUTF8CharacterSet(TransliterableCharacterSetName name) {
+
+		if (name == null) {
+			throw new IllegalArgumentException("name must not be null");
+		}
+
 		this.name = name;
 		this.items = new ArrayList<>();
 		this.transliterations = new HashMap<>();
 	}
 
-	public static TransliterableUTF8CharacterSet withItems(TransliterableUTF8CharacterSet startingSet,
-			List<TransliterableUTF8Character> items) {
+	/**
+	 * Factory method that creates a TransliterableUTF8CharacterSet from some given
+	 * TransliterableCharacterSetProvider by using the transliteration provided by
+	 * the given TransliterableCharacterSetProvider.
+	 *
+	 * @param charSetProvider TransliterableCharacterSetProvider
+	 * @return TransliterableUTF8CharacterSet
+	 */
+	public static TransliterableUTF8CharacterSet from(TransliterableCharacterSetProvider charSetProvider) {
+
+		if (charSetProvider == null) {
+			throw new IllegalArgumentException("charSetProvider must not be null");
+		}
+
+		if (charSetProvider.getItems() == null) {
+			throw new IllegalArgumentException("charSetProvider.items must not be null");
+		}
+
+		TransliterableUTF8CharacterSet result = new TransliterableUTF8CharacterSet(
+				new TransliterableCharacterSetName(charSetProvider.getName()));
+
+		List<TransliterableCharacterProvider> transliterableChars = charSetProvider.getItems();
+		final List<TransliterableUTF8Character> items = transliterableChars.stream()
+				.map(ch -> new TransliterableUTF8Character(ch)).collect(Collectors.toList());
+
+		return withItems(result, items);
+	}
+
+	/**
+	 * Factory method that creates a new TransliterableUTF8CharacterSet with the
+	 * same name as the given startingSet and the List of
+	 * TransliterableUTF8Characters. The transliterationMap is calculated from the
+	 * given items.
+	 *
+	 * @param startingSetTransliterableUTF8CharacterSet
+	 * @param items                                     List
+	 * @return TransliterableUTF8CharacterSet
+	 */
+	private static TransliterableUTF8CharacterSet withItems(final TransliterableUTF8CharacterSet startingSet,
+			final List<TransliterableUTF8Character> items) {
+
+
 
 		TransliterableUTF8CharacterSet result = new TransliterableUTF8CharacterSet(startingSet.name);
 		result.items = items;
@@ -70,15 +122,37 @@ public class TransliterableUTF8CharacterSet implements TransliterationProvider, 
 
 	}
 
-	public static TransliterableUTF8CharacterSet withItemsAndTransliterations(
-			TransliterableUTF8CharacterSet startingSet, List<TransliterableUTF8Character> items,
-			Map<String, String> transliterations) {
+	/**
+	 * Factory method that creates a new TransliterableUTF8CharacterSet with a
+	 * custom transliteration for the items.
+	 *
+	 * @param startingSetTransliterableUTF8CharacterSet
+	 * @param items                                     List
+	 * @return TransliterableUTF8CharacterSet
+	 * @throws IllegalArgumentException when either of the parameters is null or
+	 *                                  items and transliterations are not of the
+	 *                                  same size or there exists a
+	 *                                  TransliterableUTF8CharacterSet without
+	 *                                  transliteration.
+	 */
+	public static TransliterableUTF8CharacterSet withCustomTransliterations(
+			final TransliterableCharacterSetProvider charSetProvider, final Map<String, String> transliterations) {
 
-		TransliterableUTF8CharacterSet result = new TransliterableUTF8CharacterSet(startingSet.name);
-		result.items = items;
+		if (transliterations == null) {
+			throw new IllegalArgumentException("transliterations must not be null");
+		}
 
-		// TODO items must not contain elements that have no mapping in
-		// transliterations. Every key in transliteration must have a match in items.
+		TransliterableUTF8CharacterSet result = from(charSetProvider);
+
+		if (result.size() != transliterations.size()) {
+			throw new IllegalArgumentException("items and transliterations need to be of same size");
+		}
+
+		for (TransliterableUTF8Character ch : result.items) {
+			if (transliterations.get(ch.asUtf8()) == null) {
+				throw new IllegalArgumentException("transliteration for " + ch.getOriginalCodepoint() + " is missing");
+			}
+		}
 
 		result.transliterations = transliterations;
 		return result;
@@ -95,17 +169,24 @@ public class TransliterableUTF8CharacterSet implements TransliterationProvider, 
 	}
 
 	@Override
-	public boolean isValid(String givenPrintableCharacter) {
+	public boolean isPrintableCharacterValid(String givenPrintableCharacter) {
 		return this.transliterations.containsKey(givenPrintableCharacter);
 	}
 
 	@Override
-	public boolean isValid(UTF8Codepoint codePoint) {
+	public boolean isUTF8CodepointValid(UTF8Codepoint codePoint) {
 		if (codePoint == null) {
 			return false;
 		}
 
 		return this.items.stream().map(item -> item.getOriginalCodepoint()).filter(cp -> codePoint.equals(cp))
 				.findFirst().isPresent();
+	}
+
+	/**
+	 * @return int the number of items.
+	 */
+	public int size() {
+		return items.size();
 	}
 }

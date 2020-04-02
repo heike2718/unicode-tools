@@ -23,23 +23,33 @@
 // SOFTWARE.
 // =====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.internal;
 
-import java.util.List;
+import java.util.function.Function;
+
+import org.apache.commons.lang3.StringUtils;
+
+import de.egladil.web.unicode_tools.UTF8Codepoint;
 
 /**
- * UnicodeSubset
+ * CodePointsToUnicodeMapper maps a string separated by a defined char into a
+ * string separated by \\u, wich is translateable by apache text
+ * UnicodeUnescaper.
  *
  */
-@Deprecated
-public interface UnicodeSubset {
+public class CodePointsToUnicodeMapper implements Function<UTF8Codepoint, String> {
 
-	/**
-	 * Provides a List of UnicodeCodePointsProvider that usually should be a Subset
-	 * of Unicode.
-	 *
-	 * @return List
-	 */
-	List<UnicodeCodePointsProvider> getCharacters();
+	@Override
+	public String apply(UTF8Codepoint utf8CodePoint) {
+
+		String[] tokens = StringUtils.split(utf8CodePoint.getCodePoints(), utf8CodePoint.getSeparationChar());
+
+		StringBuffer sb = new StringBuffer();
+		for (String token : tokens) {
+			sb.append("\\u");
+			sb.append(token);
+		}
+		return sb.toString();
+	}
 
 }

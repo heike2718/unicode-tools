@@ -26,11 +26,12 @@
 package de.egladil.web.unicode_tools;
 
 /**
- * TransliterableUTF8Character is an Object owning an original CodePoint and a
- * CodePoint that maps it into some other Charset.<br>
+ * TransliterableUTF8Character is an Object owning an original code points
+ * wrapper and a code point wrapper as mappint to some other code points
+ * wrapper.<br>
  * <br>
  * <strong>Example: </strong> originalCodepoint '004D 0306' coding a capital M
- * with some acent breve is mapped to '004D' i.e. the ISO 8859-15 capial M.
+ * with acent breve is mapped to '004D' i.e. the ISO 8859-15 capial M.
  */
 public class TransliterableUTF8Character {
 
@@ -39,11 +40,18 @@ public class TransliterableUTF8Character {
 	private UTF8Codepoint transliteradedCodepoint;
 
 	/**
-	 * Erzeugt eine Instanz von TransliterableUTF8Character
+	 * TransliterableUTF8Character from a TransliterableCharacterProvider
+	 *
+	 * @param provider TransliterableCharacterProvider
 	 */
-	public TransliterableUTF8Character(UTF8Codepoint originalCodepoint, UTF8Codepoint transliteradedCodepoint) {
-		this.setOriginalCodepoint(originalCodepoint);
-		this.setTransliteradedCodepoint(transliteradedCodepoint);
+	public TransliterableUTF8Character(TransliterableCharacterProvider provider) {
+
+		if (provider == null) {
+			throw new IllegalArgumentException("provider must not be null");
+		}
+
+		this.originalCodepoint = new UTF8Codepoint(provider.getCodePoint(), provider.getSeparationChar());
+		this.transliteradedCodepoint = new UTF8Codepoint(provider.getMapping(), provider.getSeparationChar());
 	}
 
 	public UTF8Codepoint getOriginalCodepoint() {
@@ -69,19 +77,4 @@ public class TransliterableUTF8Character {
 	public String transliterated() {
 		return this.transliteradedCodepoint.utf8();
 	}
-
-	private void setOriginalCodepoint(UTF8Codepoint originalCodepoint) {
-		if (originalCodepoint == null) {
-			throw new IllegalArgumentException("originalCodepoint must not be null");
-		}
-		this.originalCodepoint = originalCodepoint;
-	}
-
-	private void setTransliteradedCodepoint(UTF8Codepoint transliteradedCodepoint) {
-		if (transliteradedCodepoint == null) {
-			throw new IllegalArgumentException("transliteradedCodepoint must not be null");
-		}
-		this.transliteradedCodepoint = transliteradedCodepoint;
-	}
-
 }
