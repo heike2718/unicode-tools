@@ -38,14 +38,14 @@ import de.egladil.web.unicode_tools.TransliterableCharacterProvider;
 public class DefaultTransliterableCharacter implements TransliterableCharacterProvider {
 
 	@XmlElement
-	private String codePoint;
+	private String codepoint;
 
 	@XmlElement
 	private String mapping;
 
 	@Override
 	public String getCodePoint() {
-		return codePoint;
+		return codepoint;
 	}
 
 	@Override

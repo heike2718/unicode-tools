@@ -2,27 +2,27 @@
 <defaultTransliterableCharacterSet>
 	<name>VERY_SHORT_CHARSET</name>
 	<character>
-		<codePoint>0041</codePoint>
+		<codepoint>0041</codepoint>
 		<mapping>0041</mapping>
 	</character>
 	<character>
-		<codePoint>0041 030B</codePoint>
+		<codepoint>0041 030B</codepoint>
 		<mapping>0041</mapping>
 	</character>
 	<character>
-		<codePoint>0042</codePoint>
+		<codepoint>0042</codepoint>
 		<mapping>0042</mapping>
 	</character>
 	<character>
-		<codePoint>0043</codePoint>
+		<codepoint>0043</codepoint>
 		<mapping>0043</mapping>
 	</character>
 	<character>
-		<codePoint>0043 0300</codePoint>
+		<codepoint>0043 0300</codepoint>
 		<mapping>0043</mapping>
 	</character>
 	<character>
-		<codePoint>0043 0304</codePoint>
+		<codepoint>0043 0304</codepoint>
 		<mapping>0043</mapping>
 	</character>
 </defaultTransliterableCharacterSet>
