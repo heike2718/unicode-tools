@@ -39,16 +39,17 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import de.egladil.web.unicode_tools.validation.DefaultUnicodeStringValidator;
+import de.egladil.web.unicode_tools.validation.LatinBasedUnicodeStringValidator;
 
 /**
- * DefaultUnicodeString permits Strings containing all Unicode characters based on /src/main/resources/defaultTransliterableCharacterSet.xml.
+ * LatinBasedUnicodeString permits Strings containing all Unicode characters
+ * based on /src/main/resources/latinBasedCharacterSet.xml.
  */
 @Documented
 @Retention(RUNTIME)
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
-@Constraint(validatedBy = { DefaultUnicodeStringValidator.class })
-public @interface DefaultUnicodeString {
+@Constraint(validatedBy = { LatinBasedUnicodeStringValidator.class })
+public @interface LatinBasedUnicodeString {
 
 	String message() default "{de.egladil.web.unicode_tools.invalidChars}";
 

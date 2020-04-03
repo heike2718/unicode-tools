@@ -23,24 +23,42 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.xml;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import de.egladil.web.unicode_tools.xml.mapping.MappableCharacter;
+import de.egladil.web.unicode_tools.xml.mapping.MappableCharacterSet;
+
 /**
- * TransliterableCharacterSet encapsulates the methods required for
- * mapping of some Collection of TransliterableCharacterProviders into a
- * TransliterableUTF8CharacterSet.
+ * DefaultCharacterSet
  */
-public interface TransliterableCharacterSet {
+@XmlRootElement(name = "characterSet")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class DefaultCharacterSet implements MappableCharacterSet {
 
-	/**
-	 * @return String the name.
-	 */
-	String getName();
+	@XmlElement
+	private String name;
 
-	/**
-	 * @return List the items
-	 */
-	List<TransliterableCharacter> getItems();
+	@XmlElement(name = "character")
+	private List<DefaultCharacter> transliterableCharacters;
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public List<MappableCharacter> getItems() {
+		List<MappableCharacter> result = new ArrayList<>();
+		result.addAll(transliterableCharacters);
+		return result;
+	}
+
 }

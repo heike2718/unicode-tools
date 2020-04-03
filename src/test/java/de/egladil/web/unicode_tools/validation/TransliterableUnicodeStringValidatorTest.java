@@ -38,16 +38,16 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import de.egladil.web.unicode_tools.annotations.DefaultUnicodeString;
+import de.egladil.web.unicode_tools.annotations.TransliterableUnicodeString;
 
 /**
- * DefaultUnicodeStringValidatorTest
+ * TransliterableUnicodeStringValidatorTest
  */
-public class DefaultUnicodeStringValidatorTest {
+public class TransliterableUnicodeStringValidatorTest {
 
 	class TestStringProvider {
 
-		@DefaultUnicodeString
+		@TransliterableUnicodeString
 		private final String name;
 
 		/**

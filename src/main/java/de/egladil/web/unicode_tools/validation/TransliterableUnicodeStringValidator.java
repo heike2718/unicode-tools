@@ -25,38 +25,17 @@
 
 package de.egladil.web.unicode_tools.validation;
 
-import de.egladil.web.unicode_tools.UTF8Codepoint;
+import de.egladil.web.unicode_tools.annotations.TransliterableUnicodeString;
 
 /**
- * ValidationProvider checks if some givenCharacter is valid with respect to a
- * given CharacterSet.
+ * TransliterableUnicodeStringValidator
  */
-public interface ValidationProvider {
+public class TransliterableUnicodeStringValidator
+		extends AbstractUnicodeSubsetValidator<TransliterableUnicodeString, String> {
 
-	/**
-	 * Decides if the givenPrintableCharacter is valid.
-	 *
-	 * @param givenPrintableCharacter
-	 * @return boolean
-	 */
-	boolean isPrintableCharacterValid(String givenPrintableCharacter);
+	@Override
+	protected String getWhitelistClasspathLocation() {
+		return "/defaultTransliterableCharacterSet.xml";
+	}
 
-	/**
-	 * Decides if the UTF8Codepoint is valid.
-	 *
-	 * @param codePoint UTF8Codepoint
-	 * @return boolean
-	 */
-	boolean isUTF8CodepointValid(UTF8Codepoint codePoint);
-
-	/**
-	 *
-	 * @return the name for instance for logging purposes.
-	 */
-	String name();
-
-	/**
-	 * @return int the number of items.
-	 */
-	int size();
 }

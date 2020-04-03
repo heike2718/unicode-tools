@@ -23,57 +23,24 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.xml.mapping;
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.List;
 
 /**
- * TransliterableCharacterSetName
+ * MappableCharacterSet encapsulates the methods required for
+ * mapping of some Collection of TransliterableCharacterProviders into a
+ * TransliterableUTF8CharacterSet.
  */
-public class TransliterableCharacterSetName {
-
-	private final String name;
+public interface MappableCharacterSet {
 
 	/**
-	 * TransliterableCharacterSetName
+	 * @return String the name.
 	 */
-	public TransliterableCharacterSetName(String name) {
-		if (StringUtils.isBlank(name)) {
-			throw new IllegalArgumentException("name must not be blank");
-		}
-		this.name = name;
-	}
+	String getName();
 
-	public String name() {
-		return this.name;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		TransliterableCharacterSetName other = (TransliterableCharacterSetName) obj;
-		return name.equals(other.name);
-	}
-
-	@Override
-	public String toString() {
-		return this.name;
-	}
-
+	/**
+	 * @return List the items
+	 */
+	List<MappableCharacter> getItems();
 }

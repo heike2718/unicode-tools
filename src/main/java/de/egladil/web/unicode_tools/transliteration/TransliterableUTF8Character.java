@@ -23,7 +23,10 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.transliteration;
+
+import de.egladil.web.unicode_tools.UTF8Codepoint;
+import de.egladil.web.unicode_tools.xml.mapping.MappableCharacter;
 
 /**
  * TransliterableUTF8Character is an Object owning an original code points
@@ -40,11 +43,11 @@ public class TransliterableUTF8Character {
 	private UTF8Codepoint transliteradedCodepoint;
 
 	/**
-	 * TransliterableUTF8Character from a TransliterableCharacter
+	 * TransliterableUTF8Character from a MappableCharacter
 	 *
-	 * @param provider TransliterableCharacter
+	 * @param provider MappableCharacter
 	 */
-	public TransliterableUTF8Character(TransliterableCharacter provider) {
+	public TransliterableUTF8Character(MappableCharacter provider) {
 
 		if (provider == null) {
 			throw new IllegalArgumentException("provider must not be null");

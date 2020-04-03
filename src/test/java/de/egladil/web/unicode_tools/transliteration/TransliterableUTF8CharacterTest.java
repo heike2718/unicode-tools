@@ -23,12 +23,16 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.transliteration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.jupiter.api.Test;
+
+import de.egladil.web.unicode_tools.UTF8Codepoint;
+import de.egladil.web.unicode_tools.transliteration.TransliterableUTF8Character;
+import de.egladil.web.unicode_tools.xml.mapping.MappableCharacter;
 
 /**
  * TransliterableUTF8CharacterTest
@@ -51,7 +55,7 @@ public class TransliterableUTF8CharacterTest {
 	void should_ConstructorThrowException_when_ArgumentCodePoinstNull() {
 
 		// Arrange
-		TransliterableCharacter provider = new TransliterableCharacter() {
+		MappableCharacter provider = new MappableCharacter() {
 
 			@Override
 			public char getSeparationChar() {
@@ -82,7 +86,7 @@ public class TransliterableUTF8CharacterTest {
 	void should_ConstructorThrowException_when_ArgumentMappingNull() {
 
 		// Arrange
-		TransliterableCharacter provider = new TransliterableCharacter() {
+		MappableCharacter provider = new MappableCharacter() {
 
 			@Override
 			public char getSeparationChar() {
@@ -112,7 +116,7 @@ public class TransliterableUTF8CharacterTest {
 	@Test
 	void should_FunctionAsExpected_when_InitializedPropertliy() {
 		// Arrange
-		TransliterableCharacter provider = new TransliterableCharacter() {
+		MappableCharacter provider = new MappableCharacter() {
 
 			@Override
 			public char getSeparationChar() {

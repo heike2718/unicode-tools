@@ -23,38 +23,18 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.xml;
+package de.egladil.web.unicode_tools.validation;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-
-import de.egladil.web.unicode_tools.TransliterableCharacter;
+import de.egladil.web.unicode_tools.annotations.EuropeanUnicodeString;
 
 /**
- * DefaultTransliterableCharacter
+ * EuropeanUnicodeStringValidator
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class DefaultTransliterableCharacter implements TransliterableCharacter {
-
-	@XmlElement
-	private String codepoint;
-
-	@XmlElement
-	private String mapping;
+public class EuropeanUnicodeStringValidator extends AbstractUnicodeSubsetValidator<EuropeanUnicodeString, String> {
 
 	@Override
-	public String getCodePoint() {
-		return codepoint;
+	protected String getWhitelistClasspathLocation() {
+		return "/europeanWhitelist.xml";
 	}
 
-	@Override
-	public String getMapping() {
-		return mapping;
-	}
-
-	@Override
-	public char getSeparationChar() {
-		return ' ';
-	}
 }

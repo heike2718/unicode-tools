@@ -23,75 +23,58 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.internal;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import org.junit.jupiter.api.Test;
 
+import de.egladil.web.unicode_tools.UTF8Codepoint;
+
 /**
- * TransliterableCharacterSetNameTest
+ * CodePointsToUnicodeMapperTest
  */
-public class TransliterableCharacterSetNameTest {
+public class CodePointsToUnicodeMapperTest {
 
 	@Test
-	void should_ConstructorThrowException_when_ArgumentNull() {
+	void should_ApplyThrowException_when_ArgumentNull() {
 
 		try {
-			new TransliterableCharacterSetName(null);
-			fail("keine IllegalArgumentException");
+			new CodePointsToUnicodeMapper().apply(null);
+			fail("no IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
-			assertEquals("name must not be blank", e.getMessage());
+			assertEquals("utf8CodePoint must not be null", e.getMessage());
 		}
 	}
 
 	@Test
-	void should_ConstructorThrowException_when_ArgumentBlank() {
+	void should_ApplyHandleSingleToken() {
 
-		try {
-			new TransliterableCharacterSetName("  ");
-			fail("keine IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
-			assertEquals("name must not be blank", e.getMessage());
-		}
+		// Arrange
+		UTF8Codepoint codePoint = new UTF8Codepoint("0056");
+		String expeted = "\\u0056";
+
+		// Act
+		String actual = new CodePointsToUnicodeMapper().apply(codePoint);
+
+		// Assert
+		assertEquals(expeted, actual);
+
 	}
 
 	@Test
-	void should_EqualsBeReflexive() {
+	void should_ApplyHandleTokensWithMoreThanOne() {
 
 		// Arrange
-		TransliterableCharacterSetName object1 = new TransliterableCharacterSetName("Horst");
+		UTF8Codepoint codePoint = new UTF8Codepoint("0047 0300");
+		String expeted = "\\u0047\\u0300";
+
+		// Act
+		String actual = new CodePointsToUnicodeMapper().apply(codePoint);
 
 		// Assert
-		assertEquals(object1, object1);
-		assertEquals(69913579, object1.hashCode());
-	}
+		assertEquals(expeted, actual);
 
-	@Test
-	void should_NameDetermineEquals() {
-
-		// Arrange
-		TransliterableCharacterSetName object1 = new TransliterableCharacterSetName("Horst");
-		TransliterableCharacterSetName object2 = new TransliterableCharacterSetName("Horst");
-
-		// Assert
-		assertEquals(object1, object2);
-		assertFalse(object1.equals(null));
-		assertFalse(object1.equals("Horst"));
-
-		assertEquals(object1.hashCode(), object2.hashCode());
-	}
-
-	@Test
-	void should_FunctionAsExcepted() {
-
-		// Arrange
-		TransliterableCharacterSetName object1 = new TransliterableCharacterSetName("Horst");
-
-		// Assert
-		assertEquals("Horst", object1.name());
-		assertEquals("Horst", object1.toString());
 	}
 }
