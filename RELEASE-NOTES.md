@@ -4,11 +4,7 @@ __Release 0.1.0:__
 
 * Beans validation functionality added.
 
-* default subset of Unicode containing letters based on the latin alphabeth, greek and
-  cyrillic letters.
-
-* subset of Unicode containing letters based on the latin alphabeth may be found in
-  the UnitTests.
+* default subset of Unicode containing letters based on the latin alphabeth.
 
 __Release 0.0.1:__
 
