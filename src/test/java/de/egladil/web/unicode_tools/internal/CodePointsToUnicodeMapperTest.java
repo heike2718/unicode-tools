@@ -23,42 +23,58 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.xml;
+package de.egladil.web.unicode_tools.internal;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.junit.jupiter.api.Test;
 
-import de.egladil.web.unicode_tools.TransliterableCharacter;
-import de.egladil.web.unicode_tools.TransliterableCharacterSet;
+import de.egladil.web.unicode_tools.UTF8Codepoint;
 
 /**
- * DefaultTransliterableCharacterSet
+ * CodePointsToUnicodeMapperTest
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class DefaultTransliterableCharacterSet implements TransliterableCharacterSet {
+public class CodePointsToUnicodeMapperTest {
 
-	@XmlElement
-	private String name;
+	@Test
+	void should_ApplyThrowException_when_ArgumentNull() {
 
-	@XmlElement(name = "character")
-	private List<DefaultTransliterableCharacter> transliterableCharacters;
-
-	@Override
-	public String getName() {
-		return name;
+		try {
+			new CodePointsToUnicodeMapper().apply(null);
+			fail("no IllegalArgumentException");
+		} catch (IllegalArgumentException e) {
+			assertEquals("utf8CodePoint must not be null", e.getMessage());
+		}
 	}
 
-	@Override
-	public List<TransliterableCharacter> getItems() {
-		List<TransliterableCharacter> result = new ArrayList<>();
-		result.addAll(transliterableCharacters);
-		return result;
+	@Test
+	void should_ApplyHandleSingleToken() {
+
+		// Arrange
+		UTF8Codepoint codePoint = new UTF8Codepoint("0056");
+		String expeted = "\\u0056";
+
+		// Act
+		String actual = new CodePointsToUnicodeMapper().apply(codePoint);
+
+		// Assert
+		assertEquals(expeted, actual);
+
 	}
 
+	@Test
+	void should_ApplyHandleTokensWithMoreThanOne() {
+
+		// Arrange
+		UTF8Codepoint codePoint = new UTF8Codepoint("0047 0300");
+		String expeted = "\\u0047\\u0300";
+
+		// Act
+		String actual = new CodePointsToUnicodeMapper().apply(codePoint);
+
+		// Assert
+		assertEquals(expeted, actual);
+
+	}
 }

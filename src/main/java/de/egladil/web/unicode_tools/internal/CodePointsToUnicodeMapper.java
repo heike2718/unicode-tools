@@ -42,6 +42,10 @@ public class CodePointsToUnicodeMapper implements Function<UTF8Codepoint, String
 	@Override
 	public String apply(UTF8Codepoint utf8CodePoint) {
 
+		if (utf8CodePoint == null) {
+			throw new IllegalArgumentException("utf8CodePoint must not be null");
+		}
+
 		String[] tokens = StringUtils.split(utf8CodePoint.getCodePoints(), utf8CodePoint.getSeparationChar());
 
 		StringBuffer sb = new StringBuffer();
