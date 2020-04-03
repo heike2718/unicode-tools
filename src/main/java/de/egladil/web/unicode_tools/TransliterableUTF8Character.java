@@ -40,11 +40,11 @@ public class TransliterableUTF8Character {
 	private UTF8Codepoint transliteradedCodepoint;
 
 	/**
-	 * TransliterableUTF8Character from a TransliterableCharacterProvider
+	 * TransliterableUTF8Character from a TransliterableCharacter
 	 *
-	 * @param provider TransliterableCharacterProvider
+	 * @param provider TransliterableCharacter
 	 */
-	public TransliterableUTF8Character(TransliterableCharacterProvider provider) {
+	public TransliterableUTF8Character(TransliterableCharacter provider) {
 
 		if (provider == null) {
 			throw new IllegalArgumentException("provider must not be null");

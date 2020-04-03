@@ -38,7 +38,7 @@ import javax.validation.ConstraintValidatorContext;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * typAbstractUnicodeSubsetValidator
+ * AbstractUnicodeSubsetValidator
  */
 public abstract class AbstractUnicodeSubsetValidator<A extends Annotation, T> implements ConstraintValidator<A, T> {
 
@@ -61,7 +61,7 @@ public abstract class AbstractUnicodeSubsetValidator<A extends Annotation, T> im
 
 		String strValue = (String) value;
 
-		if (strValue.isEmpty()) {
+		if (StringUtils.isBlank(strValue)) {
 
 			return true;
 		}

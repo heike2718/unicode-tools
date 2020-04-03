@@ -25,6 +25,7 @@
 
 package de.egladil.web.unicode_tools.internal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,6 @@ public class TransliterableUTF8CharacterSetFactoryTest {
 
 		assertNotNull(result);
 
+		assertEquals(725, result.size());
 	}
-
 }

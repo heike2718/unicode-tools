@@ -94,7 +94,7 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_FactoryMethodWithOneArgumentTrowException_when_NameNull() {
 
 		// Arrange
-		TransliterableCharacterSetProvider provider = new TransliterableCharacterSetProvider() {
+		TransliterableCharacterSet provider = new TransliterableCharacterSet() {
 
 			@Override
 			public String getName() {
@@ -102,7 +102,7 @@ public class TransliterableUTF8CharacterSetTest {
 			}
 
 			@Override
-			public List<TransliterableCharacterProvider> getItems() {
+			public List<TransliterableCharacter> getItems() {
 				return new ArrayList<>();
 			}
 		};
@@ -119,7 +119,7 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_FactoryMethodWithOneArgumentTrowException_when_ItemsNull() {
 
 		// Arrange
-		TransliterableCharacterSetProvider provider = new TransliterableCharacterSetProvider() {
+		TransliterableCharacterSet provider = new TransliterableCharacterSet() {
 
 			@Override
 			public String getName() {
@@ -127,7 +127,7 @@ public class TransliterableUTF8CharacterSetTest {
 			}
 
 			@Override
-			public List<TransliterableCharacterProvider> getItems() {
+			public List<TransliterableCharacter> getItems() {
 				return null;
 			}
 		};
@@ -144,7 +144,7 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_FactoryMethodWithOneArgumentCreateEmptySet_when_ProviderIsEmpty() {
 
 		// Arrange
-		TransliterableCharacterSetProvider provider = new TransliterableCharacterSetProvider() {
+		TransliterableCharacterSet provider = new TransliterableCharacterSet() {
 
 			@Override
 			public String getName() {
@@ -152,7 +152,7 @@ public class TransliterableUTF8CharacterSetTest {
 			}
 
 			@Override
-			public List<TransliterableCharacterProvider> getItems() {
+			public List<TransliterableCharacter> getItems() {
 				return new ArrayList<>();
 			}
 		};
@@ -172,7 +172,7 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_FactoryMethodWithOneArgumentCreateTransliterations_when_ItemsPresent() throws Exception {
 
 		// Arrange
-		TransliterableCharacterSetProvider provider = createProviderFromXml("/veryShortCharset.xml");
+		TransliterableCharacterSet provider = createProviderFromXml("/veryShortCharset.xml");
 
 		// Act
 		TransliterableUTF8CharacterSet result = TransliterableUTF8CharacterSet.from(provider);
@@ -187,7 +187,7 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_FactoryMethodWithCustomTransliterationsUseIt() throws Exception {
 
 		// Arrange
-		TransliterableCharacterSetProvider provider = createProviderFromXml("/charsetWitCustomMapping.xml");
+		TransliterableCharacterSet provider = createProviderFromXml("/charsetWitCustomMapping.xml");
 
 		final Map<String, String> transliterations = new HashMap<>();
 		provider.getItems().stream().forEach(item -> {
@@ -224,7 +224,7 @@ public class TransliterableUTF8CharacterSetTest {
 			throws Exception {
 
 		// Arrange
-		TransliterableCharacterSetProvider provider = createProviderFromXml("/veryShortCharset.xml");
+		TransliterableCharacterSet provider = createProviderFromXml("/veryShortCharset.xml");
 		final Map<String, String> transliterations = new HashMap<>();
 		provider.getItems().stream().forEach(item -> {
 			TransliterableUTF8Character transliterableChar = new TransliterableUTF8Character(
@@ -265,9 +265,9 @@ public class TransliterableUTF8CharacterSetTest {
 	 * @throws JAXBException
 	 * @throws IOException
 	 */
-	private TransliterableCharacterSetProvider createProviderFromXml(final String classPathResource)
+	private TransliterableCharacterSet createProviderFromXml(final String classPathResource)
 			throws JAXBException, IOException {
-		TransliterableCharacterSetProvider provider = null;
+		TransliterableCharacterSet provider = null;
 
 		try (InputStream in = getClass().getResourceAsStream(classPathResource)) {
 
@@ -279,7 +279,7 @@ public class TransliterableUTF8CharacterSetTest {
 				throw new IllegalArgumentException("provided xml is not valid for DefaultTransliterableCharacterSet");
 			}
 
-			provider = (TransliterableCharacterSetProvider) obj;
+			provider = (TransliterableCharacterSet) obj;
 		}
 		return provider;
 	}

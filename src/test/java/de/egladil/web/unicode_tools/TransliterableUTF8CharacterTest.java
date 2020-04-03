@@ -51,7 +51,7 @@ public class TransliterableUTF8CharacterTest {
 	void should_ConstructorThrowException_when_ArgumentCodePoinstNull() {
 
 		// Arrange
-		TransliterableCharacterProvider provider = new TransliterableCharacterProvider() {
+		TransliterableCharacter provider = new TransliterableCharacter() {
 
 			@Override
 			public char getSeparationChar() {
@@ -82,7 +82,7 @@ public class TransliterableUTF8CharacterTest {
 	void should_ConstructorThrowException_when_ArgumentMappingNull() {
 
 		// Arrange
-		TransliterableCharacterProvider provider = new TransliterableCharacterProvider() {
+		TransliterableCharacter provider = new TransliterableCharacter() {
 
 			@Override
 			public char getSeparationChar() {
@@ -112,7 +112,7 @@ public class TransliterableUTF8CharacterTest {
 	@Test
 	void should_FunctionAsExpected_when_InitializedPropertliy() {
 		// Arrange
-		TransliterableCharacterProvider provider = new TransliterableCharacterProvider() {
+		TransliterableCharacter provider = new TransliterableCharacter() {
 
 			@Override
 			public char getSeparationChar() {

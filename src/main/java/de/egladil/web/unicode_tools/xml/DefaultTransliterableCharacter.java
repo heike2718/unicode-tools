@@ -29,13 +29,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
-import de.egladil.web.unicode_tools.TransliterableCharacterProvider;
+import de.egladil.web.unicode_tools.TransliterableCharacter;
 
 /**
  * DefaultTransliterableCharacter
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DefaultTransliterableCharacter implements TransliterableCharacterProvider {
+public class DefaultTransliterableCharacter implements TransliterableCharacter {
 
 	@XmlElement
 	private String codepoint;

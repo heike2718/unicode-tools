@@ -33,15 +33,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import de.egladil.web.unicode_tools.TransliterableCharacterProvider;
-import de.egladil.web.unicode_tools.TransliterableCharacterSetProvider;
+import de.egladil.web.unicode_tools.TransliterableCharacter;
+import de.egladil.web.unicode_tools.TransliterableCharacterSet;
 
 /**
  * DefaultTransliterableCharacterSet
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DefaultTransliterableCharacterSet implements TransliterableCharacterSetProvider {
+public class DefaultTransliterableCharacterSet implements TransliterableCharacterSet {
 
 	@XmlElement
 	private String name;
@@ -54,8 +54,8 @@ public class DefaultTransliterableCharacterSet implements TransliterableCharacte
 		return name;
 	}
 
-	public List<TransliterableCharacterProvider> getItems() {
-		List<TransliterableCharacterProvider> result = new ArrayList<>();
+	public List<TransliterableCharacter> getItems() {
+		List<TransliterableCharacter> result = new ArrayList<>();
 		result.addAll(transliterableCharacters);
 		return result;
 	}

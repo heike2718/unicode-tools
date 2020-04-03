@@ -25,22 +25,25 @@
 
 package de.egladil.web.unicode_tools;
 
-import java.util.List;
-
 /**
- * TransliterableCharacterSetProvider encapsulates the methods required for
- * mapping of some Collection of TransliterableCharacterProviders into a
- * TransliterableUTF8CharacterSet.
+ * TransliterableCharacter encapsulates the methods required for mapping
+ * of some CharacterSet Character into a TransliterableUTF8Character.
  */
-public interface TransliterableCharacterSetProvider {
+public interface TransliterableCharacter {
 
 	/**
-	 * @return String the name.
+	 * @return char the character serving as separatoin in combined code points.
 	 */
-	String getName();
+	char getSeparationChar();
 
 	/**
-	 * @return List the items
+	 * @return String the code point of some CharacterSet element
 	 */
-	List<TransliterableCharacterProvider> getItems();
+	String getCodePoint();
+
+	/**
+	 * @return String the code point of some CharacterSet element that serves as
+	 *         transliteration for the original codePont.
+	 */
+	String getMapping();
 }

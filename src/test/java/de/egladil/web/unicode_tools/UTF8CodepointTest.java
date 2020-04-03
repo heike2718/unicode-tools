@@ -29,6 +29,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -134,6 +137,34 @@ public class UTF8CodepointTest {
 
 		// Assert
 		assertFalse(codePoint.equals("0043 0300"));
+	}
+
+	@Test
+	void list_CharsWithoutMapping() {
+
+		List<String> codepoints = Arrays
+				.asList(new String[] { "00A0", "02B9", "02BA", "02BE", "02BF", "02C8", "02CC", "2019", "2021" });
+
+		codepoints.forEach(cp -> {
+
+			System.out.println(new UTF8Codepoint(cp).toString());
+
+		});
+
+	}
+
+	@Test
+	void list_GreekChars() {
+
+		List<String> codepoints = Arrays
+				.asList(new String[] { "03C1", "03C7" });
+
+		codepoints.forEach(cp -> {
+
+			System.out.println(new UTF8Codepoint(cp).toString());
+
+		});
+
 	}
 
 }
