@@ -23,35 +23,24 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.validation;
+package de.egladil.web.unicode_tools;
 
-import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
-import static java.lang.annotation.ElementType.CONSTRUCTOR;
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import java.util.List;
 
 /**
- * TestUnicodeString allowes only Strings based on latin letters, whitespace and special
- * characters like $, +, # etc. Basis is testCharset.xml
+ * TransliterableCharacterSet encapsulates the methods required for
+ * mapping of some Collection of TransliterableCharacterProviders into a
+ * TransliterableUTF8CharacterSet.
  */
-@Documented
-@Retention(RUNTIME)
-@Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
-@Constraint(validatedBy = { TestCharsetValidator.class })
-public @interface TestUnicodeString {
+public interface TransliterableCharacterSet {
 
-	String message() default "{de.egladil.web.unicode_tools.invalidChars}";
+	/**
+	 * @return String the name.
+	 */
+	String getName();
 
-	Class<?>[] groups() default {};
-
-	Class<? extends Payload>[] payload() default {};
+	/**
+	 * @return List the items
+	 */
+	List<TransliterableCharacter> getItems();
 }

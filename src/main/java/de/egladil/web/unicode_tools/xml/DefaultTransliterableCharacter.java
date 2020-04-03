@@ -23,38 +23,38 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
-import java.io.InputStream;
-
-import org.junit.jupiter.api.Test;
-
-import de.egladil.web.unicode_tools.impl.DefaultUnicodeSubset;
-import de.egladil.web.unicode_tools.impl.DefaultUnicodeSubsetBuilder;
+import de.egladil.web.unicode_tools.TransliterableCharacter;
 
 /**
- * DefaultUnicodeSubsetBuilderTest
+ * DefaultTransliterableCharacter
  */
-public class DefaultUnicodeSubsetBuilderTest {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class DefaultTransliterableCharacter implements TransliterableCharacter {
 
-	@Test
-	void should_buildACompleteSubset_when_default() throws Exception {
+	@XmlElement
+	private String codepoint;
 
-		try (InputStream in = getClass().getResourceAsStream("/veryShortCharset.xml")) {
-			// Act
-			DefaultUnicodeSubset subset = new DefaultUnicodeSubsetBuilder().build(in);
+	@XmlElement
+	private String mapping;
 
-            // Assert
-			assertNotNull(subset);
-
-			assertNotNull(subset.getCharacters());
-
-			assertEquals(6, subset.getCharacters().size());
-		}
-
+	@Override
+	public String getCodePoint() {
+		return codepoint;
 	}
 
+	@Override
+	public String getMapping() {
+		return mapping;
+	}
+
+	@Override
+	public char getSeparationChar() {
+		return ' ';
+	}
 }

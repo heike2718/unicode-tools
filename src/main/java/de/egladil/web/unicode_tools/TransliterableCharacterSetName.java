@@ -1,5 +1,5 @@
-// =====================================================
-// Projekt: heike2718/unicode-tools
+//=====================================================
+// Projekt: unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
@@ -21,48 +21,59 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// =====================================================
+//=====================================================
 
 package de.egladil.web.unicode_tools;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.jupiter.api.Test;
-
-import de.egladil.web.unicode_tools.CodePointsToUnicodeMapper;
+import org.apache.commons.lang3.StringUtils;
 
 /**
- * CodePointsToUnicodeMapperTest
- *
+ * TransliterableCharacterSetName
  */
-public class CodePointsToUnicodeMapperTest {
+public class TransliterableCharacterSetName {
 
-	@Test
-	void should_TransformStringCorrectly_when_SeparatedByOneSpace() {
+	private final String name;
 
-		// Arrange
-		String string = "0054 0308";
-		String expected = "\\u0054\\u0308";
-
-		// Act
-		String transformed = new CodePointsToUnicodeMapper().apply(string);
-
-		// Assert
-		assertEquals(expected, transformed);
+	/**
+	 * TransliterableCharacterSetName
+	 */
+	public TransliterableCharacterSetName(String name) {
+		if (StringUtils.isBlank(name)) {
+			throw new IllegalArgumentException("name must not be blank");
+		}
+		this.name = name;
 	}
 
-	@Test
-	void should_TransformStringCorrectly_when_NonDefaultSeparationCharGiven() {
+	public String name() {
+		return this.name;
+	}
 
-		// Arrange
-		String string = "0054;0308";
-		String expected = "\\u0054\\u0308";
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
 
-		// Act
-		String transformed = new CodePointsToUnicodeMapper(';').apply(string);
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		TransliterableCharacterSetName other = (TransliterableCharacterSetName) obj;
+		return name.equals(other.name);
+	}
 
-		// Assert
-		assertEquals(expected, transformed);
+	@Override
+	public String toString() {
+		return this.name;
 	}
 
 }

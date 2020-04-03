@@ -28,7 +28,7 @@ package de.egladil.web.unicode_tools.validation;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import de.egladil.web.unicode_tools.impl.DefaultUnicodeSubset;
+import de.egladil.web.unicode_tools.xml.DefaultTransliterableCharacterSet;
 
 /**
  * JAXBContextProvider provides the complete JAXBContext for all known
@@ -51,7 +51,7 @@ public final class JAXBContextProvider {
 	 */
 	public static JAXBContext getJACBContext() throws JAXBException {
 		if (JAXBCONTEXT == null) {
-			JAXBCONTEXT = JAXBContext.newInstance(new Class[] { DefaultUnicodeSubset.class });
+			JAXBCONTEXT = JAXBContext.newInstance(new Class[] { DefaultTransliterableCharacterSet.class });
 		}
 		return JAXBCONTEXT;
 	}
