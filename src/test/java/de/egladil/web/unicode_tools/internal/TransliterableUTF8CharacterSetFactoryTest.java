@@ -23,41 +23,27 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.impl;
+package de.egladil.web.unicode_tools.internal;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.junit.jupiter.api.Test;
 
-import de.egladil.web.unicode_tools.UnicodeCodePointsProvider;
-import de.egladil.web.unicode_tools.UnicodeSubset;
+import de.egladil.web.unicode_tools.TransliterableUTF8CharacterSet;
 
 /**
- * typDefaultUnicodeSubset
+ * TransliterableUTF8CharacterSetFactoryTest
  */
-@XmlRootElement(name = "completeEgladilCharset")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class DefaultUnicodeSubset implements UnicodeSubset {
+public class TransliterableUTF8CharacterSetFactoryTest {
 
-	@XmlElement(name = "char")
-	private List<DefaultCodePointsProvider> characters = new ArrayList<>();
+	@Test
+	void should_Create() {
 
-	@Override
-	public List<UnicodeCodePointsProvider> getCharacters() {
-		return characters.stream().map(ch -> (UnicodeCodePointsProvider) ch).collect(Collectors.toList());
+		TransliterableUTF8CharacterSet result = new TransliterableUTF8CharacterSetFactory().createCharacterSet();
+
+		assertNotNull(result);
+
+		assertEquals(725, result.size());
 	}
-
-	/**
-	 * @param characters the characters to set
-	 */
-	public void setCharacters(List<DefaultCodePointsProvider> characters) {
-		this.characters = characters;
-	}
-
 }

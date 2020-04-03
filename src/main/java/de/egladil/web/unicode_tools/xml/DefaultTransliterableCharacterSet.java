@@ -1,5 +1,5 @@
-// =====================================================
-// Projekt: heike2718/unicode-tools
+//=====================================================
+// Projekt: unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
@@ -21,49 +21,43 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// =====================================================
+//=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.xml;
 
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import de.egladil.web.unicode_tools.TransliterableCharacter;
+import de.egladil.web.unicode_tools.TransliterableCharacterSet;
 
 /**
- * CodePointsToUnicodeMapper maps a string separated by a defined char into a by
- * \\u separated string, wich is translateable by apache text UnicodeUnescaper.
- *
+ * DefaultTransliterableCharacterSet
  */
-public class CodePointsToUnicodeMapper implements Function<String, String> {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class DefaultTransliterableCharacterSet implements TransliterableCharacterSet {
 
-	private char separationChar;
+	@XmlElement
+	private String name;
 
-	/**
-	 *
-	 */
-	public CodePointsToUnicodeMapper() {
-		this.separationChar = UnicodeCodePointsProvider.DEFAULT_SEPARATION_CHAR;
-	}
-
-	/**
-	 * @param separationChar
-	 */
-	public CodePointsToUnicodeMapper(char separationChar) {
-		super();
-		this.separationChar = separationChar;
-	}
+	@XmlElement(name = "character")
+	private List<DefaultTransliterableCharacter> transliterableCharacters;
 
 	@Override
-	public String apply(String string) {
+	public String getName() {
+		return name;
+	}
 
-		String[] tokens = StringUtils.split(string, separationChar);
-
-		StringBuffer sb = new StringBuffer();
-		for (String token : tokens) {
-			sb.append("\\u");
-			sb.append(token);
-		}
-		return sb.toString();
+	public List<TransliterableCharacter> getItems() {
+		List<TransliterableCharacter> result = new ArrayList<>();
+		result.addAll(transliterableCharacters);
+		return result;
 	}
 
 }

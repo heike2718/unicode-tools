@@ -1,5 +1,5 @@
-// =====================================================
-// Projekt: heike2718/unicode-tools
+//=====================================================
+// Projekt: unicode-tools
 // MIT License
 //
 // Copyright (c) 2020 Heike Winkelvoß
@@ -21,36 +21,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// =====================================================
+//=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.validation;
 
-import java.util.function.Function;
-
-import org.apache.commons.text.translate.UnicodeUnescaper;
+import de.egladil.web.unicode_tools.UTF8Codepoint;
 
 /**
- * CodePointsToUnicodeCharTranslator translates a Unicode code point into the
- * displayable litaral Strings.<br>
- * <br>
- * <strong>Example:</strong> The code point "0054 0308" is mapped to "T̈"
- *
+ * ValidationProvider checks if some givenCharacter is valid with respect to a
+ * given CharacterSet.
  */
-public class CodePointsToUnicodeCharTranslator implements Function<UnicodeCodePointsProvider, String> {
+public interface ValidationProvider {
 
-	private final UnicodeUnescaper unicodeUnescaper = new UnicodeUnescaper();
+	/**
+	 * Decides if the givenPrintableCharacter is valid.
+	 *
+	 * @param givenPrintableCharacter
+	 * @return boolean
+	 */
+	boolean isPrintableCharacterValid(String givenPrintableCharacter);
 
-	@Override
-	public String apply(UnicodeCodePointsProvider codePointsProvider) {
-
-		if (codePointsProvider == null) {
-			throw new IllegalArgumentException("codePointsProvider must not be null");
-		}
-
-		final CodePointsToUnicodeMapper codePointMapper = new CodePointsToUnicodeMapper(
-				codePointsProvider.getSeparationChar());
-
-		return unicodeUnescaper.translate(codePointMapper.apply(codePointsProvider.getCodePoints()));
-	}
-
+	/**
+	 * Decides if the UTF8Codepoint is valid.
+	 *
+	 * @param codePoint UTF8Codepoint
+	 * @return boolean
+	 */
+	boolean isUTF8CodepointValid(UTF8Codepoint codePoint);
 }

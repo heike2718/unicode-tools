@@ -42,7 +42,7 @@ import javax.validation.Payload;
 import de.egladil.web.unicode_tools.validation.DefaultUnicodeStringValidator;
 
 /**
- * DefaultUnicodeString permitts Strings containing all Unicode characters based on /src/main/resources/unicodeWhitelist.xml.
+ * DefaultUnicodeString permits Strings containing all Unicode characters based on /src/main/resources/defaultTransliterableCharacterSet.xml.
  */
 @Documented
 @Retention(RUNTIME)

@@ -23,48 +23,46 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.impl;
+package de.egladil.web.unicode_tools.internal;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import de.egladil.web.unicode_tools.TransliterableUTF8CharacterSet;
+import de.egladil.web.unicode_tools.exceptions.UnicodeToolsException;
 import de.egladil.web.unicode_tools.validation.JAXBContextProvider;
+import de.egladil.web.unicode_tools.xml.DefaultTransliterableCharacterSet;
 
 /**
- * DefaultUnicodeSubsetBuilder creates a DefaultUnicodeSubset from an xml
- * resource.
+ * TransliterableUTF8CharacterSetFactory creates a TransliterableUTF8CharacterSet
  */
-public class DefaultUnicodeSubsetBuilder {
+public class TransliterableUTF8CharacterSetFactory {
 
-	/**
-	 * DefaultUnicodeSubsetBuilder
-	 */
-	public DefaultUnicodeSubsetBuilder() {
-	}
+	private static final String UNICODE_WHITELIST_XML = "/defaultTransliterableCharacterSet.xml";
 
-	/**
-	 *
-	 * @param unicodeXmlInputStream InputStream the caller is responsible for
-	 *                              closing.
-	 * @return DefaultUnicodeSubset
-	 * @throws JAXBException            in case of Annotation errors
-	 * @throws IllegalArgumentException when xml cannot be cast to
-	 *                                  DefaultUnicodeSubset
-	 */
-	public DefaultUnicodeSubset build(InputStream unicodeXmlInputStream)
-			throws JAXBException, IllegalArgumentException {
+	public TransliterableUTF8CharacterSet createCharacterSet() {
 
-		Unmarshaller unmarshaller = JAXBContextProvider.getJACBContext().createUnmarshaller();
+		try (InputStream in = getClass().getResourceAsStream(UNICODE_WHITELIST_XML)) {
 
-		Object obj = unmarshaller.unmarshal(unicodeXmlInputStream);
+			Unmarshaller unmarshaller = JAXBContextProvider.getJACBContext().createUnmarshaller();
 
-		if (!(obj instanceof DefaultUnicodeSubset)) {
-			throw new IllegalArgumentException("provided xml is not valid for DefaultUnicodeSubset");
+			Object obj = unmarshaller.unmarshal(in);
+
+			if (!(obj instanceof DefaultTransliterableCharacterSet)) {
+				throw new IllegalArgumentException("provided xml is not valid for DefaultTransliterableCharacterSet");
+			}
+
+			DefaultTransliterableCharacterSet defaultCharSet = (DefaultTransliterableCharacterSet) obj;
+
+			return TransliterableUTF8CharacterSet.from(defaultCharSet);
+
+		} catch (IOException e) {
+			throw new UnicodeToolsException("resource " + UNICODE_WHITELIST_XML + " is not present");
+		} catch (JAXBException e) {
+			throw new UnicodeToolsException("could not unmarshall " + UNICODE_WHITELIST_XML + ": " + e.getMessage(), e);
 		}
-
-		return (DefaultUnicodeSubset) obj;
 	}
-
 }

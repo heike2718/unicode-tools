@@ -29,25 +29,35 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
-import de.egladil.web.unicode_tools.UnicodeSubset;
-import de.egladil.web.unicode_tools.UnicodeToolsException;
+import de.egladil.web.unicode_tools.TransliterableUTF8CharacterSet;
 import de.egladil.web.unicode_tools.annotations.DefaultUnicodeString;
-import de.egladil.web.unicode_tools.impl.DefaultUnicodeSubsetBuilder;
+import de.egladil.web.unicode_tools.exceptions.UnicodeToolsException;
+import de.egladil.web.unicode_tools.xml.DefaultTransliterableCharacterSet;
 
 /**
  * DefaultUnicodeStringValidator
  */
 public class DefaultUnicodeStringValidator extends AbstractUnicodeSubsetValidator<DefaultUnicodeString, String> {
 
-	private static final String UNICODE_WHITELIST_XML = "/unicodeWhitelist.xml";
+	private static final String UNICODE_WHITELIST_XML = "/defaultTransliterableCharacterSet.xml";
 
 	@Override
-	protected UnicodeSubset getAllowedUnicodeSubset() {
-
+	protected ValidationProvider getValidationProvider() {
 		try (InputStream in = getClass().getResourceAsStream(UNICODE_WHITELIST_XML)) {
 
-			return new DefaultUnicodeSubsetBuilder().build(in);
+			Unmarshaller unmarshaller = JAXBContextProvider.getJACBContext().createUnmarshaller();
+
+			Object obj = unmarshaller.unmarshal(in);
+
+			if (!(obj instanceof DefaultTransliterableCharacterSet)) {
+				throw new IllegalArgumentException("provided xml is not valid for DefaultTransliterableCharacterSet");
+			}
+
+			DefaultTransliterableCharacterSet defaultCharSet = (DefaultTransliterableCharacterSet) obj;
+
+			return TransliterableUTF8CharacterSet.from(defaultCharSet);
 
 		} catch (IOException e) {
 			throw new UnicodeToolsException("resource " + UNICODE_WHITELIST_XML + " is not present");
@@ -55,5 +65,4 @@ public class DefaultUnicodeStringValidator extends AbstractUnicodeSubsetValidato
 			throw new UnicodeToolsException("could not unmarshall " + UNICODE_WHITELIST_XML + ": " + e.getMessage(), e);
 		}
 	}
-
 }

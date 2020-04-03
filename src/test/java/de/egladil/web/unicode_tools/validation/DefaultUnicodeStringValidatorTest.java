@@ -102,25 +102,10 @@ public class DefaultUnicodeStringValidatorTest {
 	}
 
 	@Test
-	void should_LetPassCyrillicAndGreekChars_when_DefaultImplementation() {
+	void should_NotLetPassSeveralCyrillicAndGreekChars_when_DefaultImplementation() {
 
 		// Arrange
-		String testString = "Dies ist ein предложение mίt unerlaubten kyrillήschen Zeichen.";
-
-		// Act
-		Set<ConstraintViolation<TestStringProvider>> violations = validator
-				.validate(new TestStringProvider(testString));
-
-		// Assert
-		assertEquals(0, violations.size());
-
-	}
-
-	@Test
-	void should_NotLetPassSeveralCyrillicChars_when_DefaultImplementation() {
-
-		// Arrange
-		String testString = "Diэs ist ein предложение mίt unerlaubten kyrillήschen Zeichen.";
+		String testString = "Diэs ist ein предложение mίt unerlaubten kyrillήschen und gρieχischen Zeichen.";
 
 		// Act
 		Set<ConstraintViolation<TestStringProvider>> violations = validator
@@ -132,7 +117,6 @@ public class DefaultUnicodeStringValidatorTest {
 		ConstraintViolation<TestStringProvider> violation = violations.iterator().next();
 		Object invalidValue = violation.getInvalidValue();
 		assertEquals(testString, invalidValue);
-		assertEquals("enthält ungültige Zeichen: э", violation.getMessage());
+		assertEquals("enthält ungültige Zeichen: р,ρ,χ,э,ή,ί,д,е,ж,и,л,н,о,п", violation.getMessage());
 	}
-
 }

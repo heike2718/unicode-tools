@@ -23,7 +23,7 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.exceptions;
 
 /**
  * UnicodeToolsException

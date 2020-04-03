@@ -23,39 +23,27 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.impl;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-
-import de.egladil.web.unicode_tools.UnicodeCodePointsProvider;
+package de.egladil.web.unicode_tools;
 
 /**
- * DefaultCodePointsProvider class matching the
- * /src/main/resources/unicodeWhitelist.xml schema.
+ * TransliterableCharacter encapsulates the methods required for mapping
+ * of some CharacterSet Character into a TransliterableUTF8Character.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class DefaultCodePointsProvider implements UnicodeCodePointsProvider {
-
-	@XmlElement(name = "codePoint")
-	private String codePoints;
-
-	@Override
-	public String getCodePoints() {
-		return codePoints;
-	}
-
-	@Override
-	public char getSeparationChar() {
-		return DEFAULT_SEPARATION_CHAR;
-	}
+public interface TransliterableCharacter {
 
 	/**
-	 * @param codePoints the codePoints to set
+	 * @return char the character serving as separatoin in combined code points.
 	 */
-	public void setCodePoints(String codePoints) {
-		this.codePoints = codePoints;
-	}
+	char getSeparationChar();
 
+	/**
+	 * @return String the code point of some CharacterSet element
+	 */
+	String getCodePoint();
+
+	/**
+	 * @return String the code point of some CharacterSet element that serves as
+	 *         transliteration for the original codePont.
+	 */
+	String getMapping();
 }
