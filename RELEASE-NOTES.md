@@ -1,5 +1,11 @@
 # unicode-tools Release Notes
 
+__Release 0.1.1:__
+
+* DDD
+
+* test coverage
+
 __Release 0.1.0:__
 
 * Beans validation functionality added.
