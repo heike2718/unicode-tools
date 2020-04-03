@@ -23,11 +23,9 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.transliteration;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -42,9 +40,12 @@ import javax.xml.bind.Unmarshaller;
 
 import org.junit.jupiter.api.Test;
 
+import de.egladil.web.unicode_tools.UTF8SubsetSetName;
 import de.egladil.web.unicode_tools.validation.JAXBContextProvider;
-import de.egladil.web.unicode_tools.xml.DefaultTransliterableCharacter;
-import de.egladil.web.unicode_tools.xml.DefaultTransliterableCharacterSet;
+import de.egladil.web.unicode_tools.xml.DefaultCharacter;
+import de.egladil.web.unicode_tools.xml.DefaultCharacterSet;
+import de.egladil.web.unicode_tools.xml.mapping.MappableCharacter;
+import de.egladil.web.unicode_tools.xml.mapping.MappableCharacterSet;
 
 /**
  * TransliterableUTF8CharacterSetTest
@@ -67,15 +68,13 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_ConstructorWithNameCreateEmptySet() {
 
 		// Arrange
-		TransliterableCharacterSetName name = new TransliterableCharacterSetName("Horst");
+		UTF8SubsetSetName name = new UTF8SubsetSetName("Horst");
 
 		// Act
 		TransliterableUTF8CharacterSet result = new TransliterableUTF8CharacterSet(name);
 
 		// Assert
 		assertEquals(0, result.size());
-		assertFalse(result.isPrintableCharacterValid("â"));
-		assertFalse(result.isUTF8CodepointValid(new UTF8Codepoint("0043")));
 		assertEquals("Horst", result.name());
 
 	}
@@ -94,7 +93,7 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_FactoryMethodWithOneArgumentTrowException_when_NameNull() {
 
 		// Arrange
-		TransliterableCharacterSet provider = new TransliterableCharacterSet() {
+		MappableCharacterSet provider = new MappableCharacterSet() {
 
 			@Override
 			public String getName() {
@@ -102,7 +101,7 @@ public class TransliterableUTF8CharacterSetTest {
 			}
 
 			@Override
-			public List<TransliterableCharacter> getItems() {
+			public List<MappableCharacter> getItems() {
 				return new ArrayList<>();
 			}
 		};
@@ -119,7 +118,7 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_FactoryMethodWithOneArgumentTrowException_when_ItemsNull() {
 
 		// Arrange
-		TransliterableCharacterSet provider = new TransliterableCharacterSet() {
+		MappableCharacterSet provider = new MappableCharacterSet() {
 
 			@Override
 			public String getName() {
@@ -127,7 +126,7 @@ public class TransliterableUTF8CharacterSetTest {
 			}
 
 			@Override
-			public List<TransliterableCharacter> getItems() {
+			public List<MappableCharacter> getItems() {
 				return null;
 			}
 		};
@@ -144,7 +143,7 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_FactoryMethodWithOneArgumentCreateEmptySet_when_ProviderIsEmpty() {
 
 		// Arrange
-		TransliterableCharacterSet provider = new TransliterableCharacterSet() {
+		MappableCharacterSet provider = new MappableCharacterSet() {
 
 			@Override
 			public String getName() {
@@ -152,7 +151,7 @@ public class TransliterableUTF8CharacterSetTest {
 			}
 
 			@Override
-			public List<TransliterableCharacter> getItems() {
+			public List<MappableCharacter> getItems() {
 				return new ArrayList<>();
 			}
 		};
@@ -162,9 +161,6 @@ public class TransliterableUTF8CharacterSetTest {
 
 		// Assert
 		assertEquals(0, result.size());
-		assertFalse(result.isPrintableCharacterValid("â"));
-		assertFalse(result.isUTF8CodepointValid(new UTF8Codepoint("0043")));
-		assertFalse(result.isUTF8CodepointValid(null));
 
 	}
 
@@ -172,14 +168,12 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_FactoryMethodWithOneArgumentCreateTransliterations_when_ItemsPresent() throws Exception {
 
 		// Arrange
-		TransliterableCharacterSet provider = createProviderFromXml("/veryShortCharset.xml");
+		MappableCharacterSet provider = createProviderFromXml("/veryShortCharset.xml");
 
 		// Act
 		TransliterableUTF8CharacterSet result = TransliterableUTF8CharacterSet.from(provider);
 
 		// Assert
-		assertTrue(result.isPrintableCharacterValid("C̀"));
-		assertTrue(result.isUTF8CodepointValid(new UTF8Codepoint("0043 0300")));
 		assertEquals("C", result.printableTransliteratedCharacter("C̀"));
 	}
 
@@ -187,12 +181,12 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_FactoryMethodWithCustomTransliterationsUseIt() throws Exception {
 
 		// Arrange
-		TransliterableCharacterSet provider = createProviderFromXml("/charsetWitCustomMapping.xml");
+		MappableCharacterSet provider = createProviderFromXml("/charsetWitCustomMapping.xml");
 
 		final Map<String, String> transliterations = new HashMap<>();
 		provider.getItems().stream().forEach(item -> {
 			TransliterableUTF8Character transliterableChar = new TransliterableUTF8Character(
-					(DefaultTransliterableCharacter) item);
+					(DefaultCharacter) item);
 			transliterations.put(transliterableChar.asUtf8(), transliterableChar.transliterated());
 		});
 
@@ -201,8 +195,6 @@ public class TransliterableUTF8CharacterSetTest {
 				.withCustomTransliterations(createProviderFromXml("/veryShortCharset.xml"), transliterations);
 
 		// Assert
-		assertTrue(result.isPrintableCharacterValid("C̀"));
-		assertTrue(result.isUTF8CodepointValid(new UTF8Codepoint("0043 0300")));
 		assertEquals("(", result.printableTransliteratedCharacter("C̀"));
 	}
 
@@ -224,11 +216,11 @@ public class TransliterableUTF8CharacterSetTest {
 			throws Exception {
 
 		// Arrange
-		TransliterableCharacterSet provider = createProviderFromXml("/veryShortCharset.xml");
+		MappableCharacterSet provider = createProviderFromXml("/veryShortCharset.xml");
 		final Map<String, String> transliterations = new HashMap<>();
 		provider.getItems().stream().forEach(item -> {
 			TransliterableUTF8Character transliterableChar = new TransliterableUTF8Character(
-					(DefaultTransliterableCharacter) item);
+					(DefaultCharacter) item);
 
 			if (!transliterableChar.asUtf8().equals("C̀")) {
 				transliterations.put(transliterableChar.asUtf8(), transliterableChar.transliterated());
@@ -241,7 +233,8 @@ public class TransliterableUTF8CharacterSetTest {
 			TransliterableUTF8CharacterSet.withCustomTransliterations(provider, transliterations);
 			fail("no IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
-			assertEquals("transliteration for UTF8Codepoint [utf8=C̀, codePoints=0043 0300] is missing", e.getMessage());
+			assertEquals("transliteration for UTF8Codepoint [utf8=C̀, codePoints=0043 0300] is missing",
+					e.getMessage());
 		}
 	}
 
@@ -265,9 +258,9 @@ public class TransliterableUTF8CharacterSetTest {
 	 * @throws JAXBException
 	 * @throws IOException
 	 */
-	private TransliterableCharacterSet createProviderFromXml(final String classPathResource)
+	private MappableCharacterSet createProviderFromXml(final String classPathResource)
 			throws JAXBException, IOException {
-		TransliterableCharacterSet provider = null;
+		MappableCharacterSet provider = null;
 
 		try (InputStream in = getClass().getResourceAsStream(classPathResource)) {
 
@@ -275,11 +268,11 @@ public class TransliterableUTF8CharacterSetTest {
 
 			Object obj = unmarshaller.unmarshal(in);
 
-			if (!(obj instanceof DefaultTransliterableCharacterSet)) {
-				throw new IllegalArgumentException("provided xml is not valid for DefaultTransliterableCharacterSet");
+			if (!(obj instanceof DefaultCharacterSet)) {
+				throw new IllegalArgumentException("provided xml is not valid for DefaultCharacterSet");
 			}
 
-			provider = (TransliterableCharacterSet) obj;
+			provider = (MappableCharacterSet) obj;
 		}
 		return provider;
 	}

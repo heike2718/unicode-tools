@@ -32,15 +32,15 @@ import static org.junit.Assert.fail;
 import org.junit.jupiter.api.Test;
 
 /**
- * TransliterableCharacterSetNameTest
+ * UTF8SubsetSetNameTest
  */
-public class TransliterableCharacterSetNameTest {
+public class UTF8SubsetSetNameTest {
 
 	@Test
 	void should_ConstructorThrowException_when_ArgumentNull() {
 
 		try {
-			new TransliterableCharacterSetName(null);
+			new UTF8SubsetSetName(null);
 			fail("keine IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertEquals("name must not be blank", e.getMessage());
@@ -51,7 +51,7 @@ public class TransliterableCharacterSetNameTest {
 	void should_ConstructorThrowException_when_ArgumentBlank() {
 
 		try {
-			new TransliterableCharacterSetName("  ");
+			new UTF8SubsetSetName("  ");
 			fail("keine IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertEquals("name must not be blank", e.getMessage());
@@ -62,7 +62,7 @@ public class TransliterableCharacterSetNameTest {
 	void should_EqualsBeReflexive() {
 
 		// Arrange
-		TransliterableCharacterSetName object1 = new TransliterableCharacterSetName("Horst");
+		UTF8SubsetSetName object1 = new UTF8SubsetSetName("Horst");
 
 		// Assert
 		assertEquals(object1, object1);
@@ -73,8 +73,8 @@ public class TransliterableCharacterSetNameTest {
 	void should_NameDetermineEquals() {
 
 		// Arrange
-		TransliterableCharacterSetName object1 = new TransliterableCharacterSetName("Horst");
-		TransliterableCharacterSetName object2 = new TransliterableCharacterSetName("Horst");
+		UTF8SubsetSetName object1 = new UTF8SubsetSetName("Horst");
+		UTF8SubsetSetName object2 = new UTF8SubsetSetName("Horst");
 
 		// Assert
 		assertEquals(object1, object2);
@@ -88,7 +88,7 @@ public class TransliterableCharacterSetNameTest {
 	void should_FunctionAsExcepted() {
 
 		// Arrange
-		TransliterableCharacterSetName object1 = new TransliterableCharacterSetName("Horst");
+		UTF8SubsetSetName object1 = new UTF8SubsetSetName("Horst");
 
 		// Assert
 		assertEquals("Horst", object1.name());

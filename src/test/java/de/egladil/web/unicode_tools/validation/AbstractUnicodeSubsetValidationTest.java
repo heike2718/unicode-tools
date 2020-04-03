@@ -38,7 +38,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import de.egladil.web.unicode_tools.annotations.DefaultUnicodeString;
+import de.egladil.web.unicode_tools.annotations.TransliterableUnicodeString;
 
 /**
  * AbstractUnicodeSubsetValidationTest
@@ -47,7 +47,7 @@ public class AbstractUnicodeSubsetValidationTest {
 
 	class TestStringProvider {
 
-		@DefaultUnicodeString
+		@TransliterableUnicodeString
 		private final String name;
 
 		/**

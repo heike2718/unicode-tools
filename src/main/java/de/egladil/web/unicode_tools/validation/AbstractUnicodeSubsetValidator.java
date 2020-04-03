@@ -25,6 +25,8 @@
 
 package de.egladil.web.unicode_tools.validation;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
 import java.util.HashSet;
@@ -34,8 +36,13 @@ import java.util.Set;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.StringUtils;
+
+import de.egladil.web.unicode_tools.exceptions.UnicodeToolsException;
+import de.egladil.web.unicode_tools.xml.DefaultCharacterSet;
 
 /**
  * AbstractUnicodeSubsetValidator
@@ -44,7 +51,8 @@ public abstract class AbstractUnicodeSubsetValidator<A extends Annotation, T> im
 
 	private String messageTemplate = "de.egladil.web.unicode_tools.invalidChars";
 
-	private final ResourceBundle validationMessages = ResourceBundle.getBundle("UnicodeToolsValidationMessages", Locale.GERMAN);
+	private final ResourceBundle validationMessages = ResourceBundle.getBundle("UnicodeToolsValidationMessages",
+			Locale.GERMAN);
 
 	@Override
 	public boolean isValid(T value, ConstraintValidatorContext context) {
@@ -66,7 +74,6 @@ public abstract class AbstractUnicodeSubsetValidator<A extends Annotation, T> im
 			return true;
 		}
 
-
 		ValidationProvider validationProvider = getValidationProvider();
 
 		Set<String> unallowedSubstrings = new HashSet<>();
@@ -83,10 +90,9 @@ public abstract class AbstractUnicodeSubsetValidator<A extends Annotation, T> im
 
 			String invalidChars = StringUtils.join(unallowedSubstrings, ",");
 			String valMessage = validationMessages.getString(messageTemplate);
-			String message = MessageFormat.format(valMessage, new Object[] {invalidChars});
+			String message = MessageFormat.format(valMessage, new Object[] { invalidChars });
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
-
 
 			return false;
 		}
@@ -94,5 +100,33 @@ public abstract class AbstractUnicodeSubsetValidator<A extends Annotation, T> im
 		return true;
 	}
 
-	protected abstract ValidationProvider getValidationProvider();
+	private ValidationProvider getValidationProvider() {
+
+		String whitelistLocation = getWhitelistClasspathLocation();
+
+		try (InputStream in = getClass().getResourceAsStream(whitelistLocation)) {
+
+			Unmarshaller unmarshaller = JAXBContextProvider.getJACBContext().createUnmarshaller();
+
+			Object obj = unmarshaller.unmarshal(in);
+
+			if (!(obj instanceof DefaultCharacterSet)) {
+				throw new IllegalArgumentException("provided xml is not valid for DefaultCharacterSet");
+			}
+
+			DefaultCharacterSet defaultCharSet = (DefaultCharacterSet) obj;
+
+			return ValidatableUTF8CharacterSet.from(defaultCharSet);
+
+		} catch (IOException e) {
+			throw new UnicodeToolsException("resource " + whitelistLocation + " is not present");
+		} catch (JAXBException e) {
+			throw new UnicodeToolsException("could not unmarshall " + whitelistLocation + ": " + e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * @return the classpath resource to the xml file containing the whitelist.
+	 */
+	protected abstract String getWhitelistClasspathLocation();
 }

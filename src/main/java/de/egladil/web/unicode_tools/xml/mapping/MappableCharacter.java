@@ -23,40 +23,28 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.validation;
-
-import de.egladil.web.unicode_tools.UTF8Codepoint;
+package de.egladil.web.unicode_tools.xml.mapping;
 
 /**
- * ValidationProvider checks if some givenCharacter is valid with respect to a
- * given CharacterSet.
+ * MappableCharacter encapsulates the methods required for mapping of some
+ * CharacterSet Character into a TransliterableUTF8Character or ValitadtableUTF8Character.
  */
-public interface ValidationProvider {
+public interface MappableCharacter {
 
 	/**
-	 * Decides if the givenPrintableCharacter is valid.
-	 *
-	 * @param givenPrintableCharacter
-	 * @return boolean
+	 * @return char the character serving as separatoin in combined code points.
 	 */
-	boolean isPrintableCharacterValid(String givenPrintableCharacter);
+	char getSeparationChar();
 
 	/**
-	 * Decides if the UTF8Codepoint is valid.
-	 *
-	 * @param codePoint UTF8Codepoint
-	 * @return boolean
+	 * @return String the code point of some CharacterSet element
 	 */
-	boolean isUTF8CodepointValid(UTF8Codepoint codePoint);
+	String getCodePoint();
 
 	/**
-	 *
-	 * @return the name for instance for logging purposes.
+	 * @return String the code point of some CharacterSet element that serves as
+	 *         transliteration for the original codePont.
 	 */
-	String name();
+	String getMapping();
 
-	/**
-	 * @return int the number of items.
-	 */
-	int size();
 }

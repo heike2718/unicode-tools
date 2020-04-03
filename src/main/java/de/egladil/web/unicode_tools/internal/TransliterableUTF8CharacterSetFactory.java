@@ -31,10 +31,10 @@ import java.io.InputStream;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import de.egladil.web.unicode_tools.TransliterableUTF8CharacterSet;
 import de.egladil.web.unicode_tools.exceptions.UnicodeToolsException;
+import de.egladil.web.unicode_tools.transliteration.TransliterableUTF8CharacterSet;
 import de.egladil.web.unicode_tools.validation.JAXBContextProvider;
-import de.egladil.web.unicode_tools.xml.DefaultTransliterableCharacterSet;
+import de.egladil.web.unicode_tools.xml.DefaultCharacterSet;
 
 /**
  * TransliterableUTF8CharacterSetFactory creates a TransliterableUTF8CharacterSet
@@ -51,11 +51,11 @@ public class TransliterableUTF8CharacterSetFactory {
 
 			Object obj = unmarshaller.unmarshal(in);
 
-			if (!(obj instanceof DefaultTransliterableCharacterSet)) {
-				throw new IllegalArgumentException("provided xml is not valid for DefaultTransliterableCharacterSet");
+			if (!(obj instanceof DefaultCharacterSet)) {
+				throw new IllegalArgumentException("provided xml is not valid for DefaultCharacterSet");
 			}
 
-			DefaultTransliterableCharacterSet defaultCharSet = (DefaultTransliterableCharacterSet) obj;
+			DefaultCharacterSet defaultCharSet = (DefaultCharacterSet) obj;
 
 			return TransliterableUTF8CharacterSet.from(defaultCharSet);
 

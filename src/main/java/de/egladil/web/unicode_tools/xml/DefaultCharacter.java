@@ -23,40 +23,38 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.validation;
+package de.egladil.web.unicode_tools.xml;
 
-import de.egladil.web.unicode_tools.UTF8Codepoint;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
+import de.egladil.web.unicode_tools.xml.mapping.MappableCharacter;
 
 /**
- * ValidationProvider checks if some givenCharacter is valid with respect to a
- * given CharacterSet.
+ * DefaultCharacter
  */
-public interface ValidationProvider {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class DefaultCharacter implements MappableCharacter {
 
-	/**
-	 * Decides if the givenPrintableCharacter is valid.
-	 *
-	 * @param givenPrintableCharacter
-	 * @return boolean
-	 */
-	boolean isPrintableCharacterValid(String givenPrintableCharacter);
+	@XmlElement
+	private String codepoint;
 
-	/**
-	 * Decides if the UTF8Codepoint is valid.
-	 *
-	 * @param codePoint UTF8Codepoint
-	 * @return boolean
-	 */
-	boolean isUTF8CodepointValid(UTF8Codepoint codePoint);
+	@XmlElement
+	private String mapping;
 
-	/**
-	 *
-	 * @return the name for instance for logging purposes.
-	 */
-	String name();
+	@Override
+	public String getCodePoint() {
+		return codepoint;
+	}
 
-	/**
-	 * @return int the number of items.
-	 */
-	int size();
+	@Override
+	public String getMapping() {
+		return mapping;
+	}
+
+	@Override
+	public char getSeparationChar() {
+		return ' ';
+	}
 }

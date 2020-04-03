@@ -23,42 +23,17 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.xml;
+package de.egladil.web.unicode_tools.validation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import de.egladil.web.unicode_tools.TransliterableCharacter;
-import de.egladil.web.unicode_tools.TransliterableCharacterSet;
+import de.egladil.web.unicode_tools.annotations.LatinBasedUnicodeString;
 
 /**
- * DefaultTransliterableCharacterSet
+ * LatinBasedUnicodeStringValidator
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class DefaultTransliterableCharacterSet implements TransliterableCharacterSet {
-
-	@XmlElement
-	private String name;
-
-	@XmlElement(name = "character")
-	private List<DefaultTransliterableCharacter> transliterableCharacters;
+public class LatinBasedUnicodeStringValidator extends AbstractUnicodeSubsetValidator<LatinBasedUnicodeString, String> {
 
 	@Override
-	public String getName() {
-		return name;
+	protected String getWhitelistClasspathLocation() {
+		return "/latinBasedCharacterSet.xml";
 	}
-
-	@Override
-	public List<TransliterableCharacter> getItems() {
-		List<TransliterableCharacter> result = new ArrayList<>();
-		result.addAll(transliterableCharacters);
-		return result;
-	}
-
 }

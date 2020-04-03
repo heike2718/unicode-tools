@@ -23,27 +23,28 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.transliteration;
 
 /**
- * TransliterableCharacter encapsulates the methods required for mapping
- * of some CharacterSet Character into a TransliterableUTF8Character.
+ * CharacterTransliterationProvider provides some sort of transliteration for some
+ * Character into another Character.
  */
-public interface TransliterableCharacter {
+public interface CharacterTransliterationProvider {
 
 	/**
-	 * @return char the character serving as separatoin in combined code points.
+	 * Returns the transliteration as printable String of length 1 to which the
+	 * givenPrintableCharacter will be mapped according to the mapping that is
+	 * defined by some CharcterSet.
+	 *
+	 * @param givenPrintableCharacter String
+	 * @return String or null, if givenPrintableCharacter is not contained.
 	 */
-	char getSeparationChar();
+	String printableTransliteratedCharacter(String givenPrintableCharacter);
 
 	/**
-	 * @return String the code point of some CharacterSet element
+	 * Gibt den Namen zurück fürs Logging.
+	 *
+	 * @return String
 	 */
-	String getCodePoint();
-
-	/**
-	 * @return String the code point of some CharacterSet element that serves as
-	 *         transliteration for the original codePont.
-	 */
-	String getMapping();
+	String name();
 }

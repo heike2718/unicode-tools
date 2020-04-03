@@ -23,7 +23,7 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
+package de.egladil.web.unicode_tools.transliteration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,8 +33,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.egladil.web.unicode_tools.mapping.CharacterTransliterationProvider;
+import de.egladil.web.unicode_tools.UTF8Codepoint;
+import de.egladil.web.unicode_tools.UTF8SubsetSetName;
 import de.egladil.web.unicode_tools.validation.ValidationProvider;
+import de.egladil.web.unicode_tools.xml.mapping.MappableCharacter;
+import de.egladil.web.unicode_tools.xml.mapping.MappableCharacterSet;
 
 /**
  * TransliterableUTF8CharacterSet is a collection of
@@ -42,12 +45,11 @@ import de.egladil.web.unicode_tools.validation.ValidationProvider;
  * when their names are equal. It provides a transliteration from one printable
  * character into another printable character.
  */
-public class TransliterableUTF8CharacterSet
-		implements CharacterTransliterationProvider, ValidationProvider {
+public class TransliterableUTF8CharacterSet implements CharacterTransliterationProvider {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TransliterableUTF8CharacterSet.class);
 
-	private final TransliterableCharacterSetName name;
+	private final UTF8SubsetSetName name;
 
 	private List<TransliterableUTF8Character> items;
 
@@ -58,7 +60,7 @@ public class TransliterableUTF8CharacterSet
 	 *
 	 * @param name String
 	 */
-	TransliterableUTF8CharacterSet(TransliterableCharacterSetName name) {
+	TransliterableUTF8CharacterSet(UTF8SubsetSetName name) {
 
 		if (name == null) {
 			throw new IllegalArgumentException("name must not be null");
@@ -71,13 +73,13 @@ public class TransliterableUTF8CharacterSet
 
 	/**
 	 * Factory method that creates a TransliterableUTF8CharacterSet from some given
-	 * TransliterableCharacterSet by using the transliteration provided by the given
-	 * TransliterableCharacterSet.
+	 * MappableCharacterSet by using the transliteration provided by the given
+	 * MappableCharacterSet.
 	 *
-	 * @param charSetProvider TransliterableCharacterSet
+	 * @param charSetProvider MappableCharacterSet
 	 * @return TransliterableUTF8CharacterSet
 	 */
-	public static TransliterableUTF8CharacterSet from(TransliterableCharacterSet charSetProvider) {
+	public static TransliterableUTF8CharacterSet from(MappableCharacterSet charSetProvider) {
 
 		if (charSetProvider == null) {
 			throw new IllegalArgumentException("charSetProvider must not be null");
@@ -88,13 +90,13 @@ public class TransliterableUTF8CharacterSet
 		}
 
 		TransliterableUTF8CharacterSet result = new TransliterableUTF8CharacterSet(
-				new TransliterableCharacterSetName(charSetProvider.getName()));
+				new UTF8SubsetSetName(charSetProvider.getName()));
 
-		List<TransliterableCharacter> transliterableChars = charSetProvider.getItems();
+		List<MappableCharacter> transliterableChars = charSetProvider.getItems();
 
 		final List<TransliterableUTF8Character> items = new ArrayList<>();
 
-		for (TransliterableCharacter provider : transliterableChars) {
+		for (MappableCharacter provider : transliterableChars) {
 			try {
 				items.add(new TransliterableUTF8Character(provider));
 			} catch (IllegalArgumentException e) {
@@ -151,7 +153,7 @@ public class TransliterableUTF8CharacterSet
 	 *                                  transliteration.
 	 */
 	public static TransliterableUTF8CharacterSet withCustomTransliterations(
-			final TransliterableCharacterSet charSetProvider, final Map<String, String> transliterations) {
+			final MappableCharacterSet charSetProvider, final Map<String, String> transliterations) {
 
 		if (transliterations == null) {
 			throw new IllegalArgumentException("transliterations must not be null");
@@ -181,21 +183,6 @@ public class TransliterableUTF8CharacterSet
 	@Override
 	public String name() {
 		return this.name.name();
-	}
-
-	@Override
-	public boolean isPrintableCharacterValid(String givenPrintableCharacter) {
-		return this.transliterations.containsKey(givenPrintableCharacter);
-	}
-
-	@Override
-	public boolean isUTF8CodepointValid(UTF8Codepoint codePoint) {
-		if (codePoint == null) {
-			return false;
-		}
-
-		return this.items.stream().map(item -> item.getOriginalCodepoint()).filter(cp -> codePoint.equals(cp))
-				.findFirst().isPresent();
 	}
 
 	/**

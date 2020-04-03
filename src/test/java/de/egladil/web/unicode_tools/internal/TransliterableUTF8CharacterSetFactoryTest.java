@@ -30,7 +30,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
-import de.egladil.web.unicode_tools.TransliterableUTF8CharacterSet;
+import de.egladil.web.unicode_tools.transliteration.TransliterableUTF8CharacterSet;
 
 /**
  * TransliterableUTF8CharacterSetFactoryTest
