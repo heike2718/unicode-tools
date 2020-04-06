@@ -47,7 +47,7 @@ public class DefaultCharacterSet implements MappableCharacterSet {
 	private String name;
 
 	@XmlElement(name = "character")
-	private List<DefaultCharacter> transliterableCharacters;
+	private List<DefaultCharacter> items;
 
 	@Override
 	public String getName() {
@@ -57,7 +57,7 @@ public class DefaultCharacterSet implements MappableCharacterSet {
 	@Override
 	public List<MappableCharacter> getItems() {
 		List<MappableCharacter> result = new ArrayList<>();
-		result.addAll(transliterableCharacters);
+		result.addAll(items);
 		return result;
 	}
 
