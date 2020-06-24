@@ -33,9 +33,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.egladil.web.unicode_tools.UTF8Codepoint;
-import de.egladil.web.unicode_tools.UTF8SubsetSetName;
-import de.egladil.web.unicode_tools.validation.ValidationProvider;
+import de.egladil.web.unicode_tools.UTF8SubsetSetId;
 import de.egladil.web.unicode_tools.xml.mapping.MappableCharacter;
 import de.egladil.web.unicode_tools.xml.mapping.MappableCharacterSet;
 
@@ -45,11 +43,11 @@ import de.egladil.web.unicode_tools.xml.mapping.MappableCharacterSet;
  * when their names are equal. It provides a transliteration from one printable
  * character into another printable character.
  */
-public class TransliterableUTF8CharacterSet implements CharacterTransliterationProvider {
+public class TransliterableUTF8CharacterSet implements TransliterationProvider, CharacterTransliterationProvider {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TransliterableUTF8CharacterSet.class);
 
-	private final UTF8SubsetSetName name;
+	private final UTF8SubsetSetId name;
 
 	private List<TransliterableUTF8Character> items;
 
@@ -60,7 +58,7 @@ public class TransliterableUTF8CharacterSet implements CharacterTransliterationP
 	 *
 	 * @param name String
 	 */
-	TransliterableUTF8CharacterSet(UTF8SubsetSetName name) {
+	TransliterableUTF8CharacterSet(UTF8SubsetSetId name) {
 
 		if (name == null) {
 			throw new IllegalArgumentException("name must not be null");
@@ -90,7 +88,7 @@ public class TransliterableUTF8CharacterSet implements CharacterTransliterationP
 		}
 
 		TransliterableUTF8CharacterSet result = new TransliterableUTF8CharacterSet(
-				new UTF8SubsetSetName(charSetProvider.getName()));
+				new UTF8SubsetSetId(charSetProvider.getName()));
 
 		List<MappableCharacter> transliterableChars = charSetProvider.getItems();
 
@@ -152,8 +150,8 @@ public class TransliterableUTF8CharacterSet implements CharacterTransliterationP
 	 *                                  TransliterableUTF8CharacterSet without
 	 *                                  transliteration.
 	 */
-	public static TransliterableUTF8CharacterSet withCustomTransliterations(
-			final MappableCharacterSet charSetProvider, final Map<String, String> transliterations) {
+	public static TransliterableUTF8CharacterSet withCustomTransliterations(final MappableCharacterSet charSetProvider,
+			final Map<String, String> transliterations) {
 
 		if (transliterations == null) {
 			throw new IllegalArgumentException("transliterations must not be null");
@@ -178,6 +176,25 @@ public class TransliterableUTF8CharacterSet implements CharacterTransliterationP
 	@Override
 	public String printableTransliteratedCharacter(String givenPrintableCharacter) {
 		return this.transliterations.get(givenPrintableCharacter);
+	}
+
+	@Override
+	public String transliterate(String givenText) {
+
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < givenText.length(); i++) {
+
+			String substr = givenText.substring(i, i + 1);
+			String mapping = transliterations.get(substr);
+			if (mapping == null) {
+				sb.append(substr);
+			} else {
+				sb.append(mapping);
+			}
+
+		}
+
+		return sb.toString();
 	}
 
 	@Override

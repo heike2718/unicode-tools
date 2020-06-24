@@ -25,4 +25,8 @@
 		<codepoint>0043 0304</codepoint>
 		<mapping>0043</mapping>
 	</character>
+	<character>
+		<codepoint>004D 0302</codepoint>
+		<mapping>004D</mapping>
+	</character>
 </characterSet>

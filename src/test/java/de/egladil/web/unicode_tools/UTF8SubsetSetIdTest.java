@@ -32,15 +32,15 @@ import static org.junit.Assert.fail;
 import org.junit.jupiter.api.Test;
 
 /**
- * UTF8SubsetSetNameTest
+ * UTF8SubsetSetIdTest
  */
-public class UTF8SubsetSetNameTest {
+public class UTF8SubsetSetIdTest {
 
 	@Test
 	void should_ConstructorThrowException_when_ArgumentNull() {
 
 		try {
-			new UTF8SubsetSetName(null);
+			new UTF8SubsetSetId(null);
 			fail("keine IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertEquals("name must not be blank", e.getMessage());
@@ -51,7 +51,7 @@ public class UTF8SubsetSetNameTest {
 	void should_ConstructorThrowException_when_ArgumentBlank() {
 
 		try {
-			new UTF8SubsetSetName("  ");
+			new UTF8SubsetSetId("  ");
 			fail("keine IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertEquals("name must not be blank", e.getMessage());
@@ -62,7 +62,7 @@ public class UTF8SubsetSetNameTest {
 	void should_EqualsBeReflexive() {
 
 		// Arrange
-		UTF8SubsetSetName object1 = new UTF8SubsetSetName("Horst");
+		UTF8SubsetSetId object1 = new UTF8SubsetSetId("Horst");
 
 		// Assert
 		assertEquals(object1, object1);
@@ -73,8 +73,8 @@ public class UTF8SubsetSetNameTest {
 	void should_NameDetermineEquals() {
 
 		// Arrange
-		UTF8SubsetSetName object1 = new UTF8SubsetSetName("Horst");
-		UTF8SubsetSetName object2 = new UTF8SubsetSetName("Horst");
+		UTF8SubsetSetId object1 = new UTF8SubsetSetId("Horst");
+		UTF8SubsetSetId object2 = new UTF8SubsetSetId("Horst");
 
 		// Assert
 		assertEquals(object1, object2);
@@ -88,7 +88,7 @@ public class UTF8SubsetSetNameTest {
 	void should_FunctionAsExcepted() {
 
 		// Arrange
-		UTF8SubsetSetName object1 = new UTF8SubsetSetName("Horst");
+		UTF8SubsetSetId object1 = new UTF8SubsetSetId("Horst");
 
 		// Assert
 		assertEquals("Horst", object1.name());

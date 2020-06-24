@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import de.egladil.web.unicode_tools.UTF8Codepoint;
-import de.egladil.web.unicode_tools.UTF8SubsetSetName;
+import de.egladil.web.unicode_tools.UTF8SubsetSetId;
 import de.egladil.web.unicode_tools.xml.mapping.MappableCharacter;
 import de.egladil.web.unicode_tools.xml.mapping.MappableCharacterSet;
 
@@ -40,7 +40,7 @@ import de.egladil.web.unicode_tools.xml.mapping.MappableCharacterSet;
  */
 public class ValidatableUTF8CharacterSet implements ValidationProvider {
 
-	private final UTF8SubsetSetName name;
+	private final UTF8SubsetSetId name;
 
 	private List<UTF8Codepoint> items;
 
@@ -61,7 +61,7 @@ public class ValidatableUTF8CharacterSet implements ValidationProvider {
 		}
 
 		ValidatableUTF8CharacterSet result = new ValidatableUTF8CharacterSet(
-				new UTF8SubsetSetName(characterSet.getName()));
+				new UTF8SubsetSetId(characterSet.getName()));
 
 		List<MappableCharacter> theValidatableItems = characterSet.getItems();
 
@@ -78,7 +78,7 @@ public class ValidatableUTF8CharacterSet implements ValidationProvider {
 	/**
 	 * ValidatableUTF8CharacterSet
 	 */
-	ValidatableUTF8CharacterSet(UTF8SubsetSetName name) {
+	ValidatableUTF8CharacterSet(UTF8SubsetSetId name) {
 		if (name == null) {
 			throw new IllegalArgumentException("name must not be null");
 		}

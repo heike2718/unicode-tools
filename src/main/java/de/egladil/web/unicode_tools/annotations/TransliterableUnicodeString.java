@@ -39,7 +39,6 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import de.egladil.web.unicode_tools.validation.LatinBasedUnicodeStringValidator;
 import de.egladil.web.unicode_tools.validation.TransliterableUnicodeStringValidator;
 
 /**

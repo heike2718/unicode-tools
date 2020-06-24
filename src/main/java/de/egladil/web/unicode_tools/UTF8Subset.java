@@ -23,29 +23,34 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.transliteration;
+package de.egladil.web.unicode_tools;
+
+import java.util.List;
 
 /**
- * CharacterTransliterationProvider provides some sort of transliteration for
- * some Character into another Character.
+ * UTF8Subset
  */
-@Deprecated
-public interface CharacterTransliterationProvider {
+public class UTF8Subset {
+
+	private final UTF8SubsetSetId id;
+
+	private final List<UTF8SubsetItem> items;
 
 	/**
-	 * Returns the transliteration as printable String of length 1 to which the
-	 * givenPrintableCharacter will be mapped according to the mapping that is
-	 * defined by some CharcterSet.
-	 *
-	 * @param givenPrintableCharacter String
-	 * @return String or null, if givenPrintableCharacter is not contained.
+	 * UTF8Subset
 	 */
-	String printableTransliteratedCharacter(String givenPrintableCharacter);
+	public UTF8Subset(UTF8SubsetSetId id, List<UTF8SubsetItem> items) {
 
-	/**
-	 * Gibt den Namen zurück fürs Logging.
-	 *
-	 * @return String
-	 */
-	String name();
+		if (id == null) {
+			throw new IllegalArgumentException("id must not be null");
+		}
+
+		if (items == null) {
+			throw new IllegalArgumentException("items must not be null");
+		}
+
+		this.id = id;
+		this.items = items;
+	}
+
 }

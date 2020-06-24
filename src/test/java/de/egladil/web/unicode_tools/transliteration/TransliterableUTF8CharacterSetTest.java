@@ -40,7 +40,8 @@ import javax.xml.bind.Unmarshaller;
 
 import org.junit.jupiter.api.Test;
 
-import de.egladil.web.unicode_tools.UTF8SubsetSetName;
+import de.egladil.web.unicode_tools.UTF8SubsetSetId;
+import de.egladil.web.unicode_tools.internal.TransliterableUTF8CharacterSetFactory;
 import de.egladil.web.unicode_tools.validation.JAXBContextProvider;
 import de.egladil.web.unicode_tools.xml.DefaultCharacter;
 import de.egladil.web.unicode_tools.xml.DefaultCharacterSet;
@@ -68,7 +69,7 @@ public class TransliterableUTF8CharacterSetTest {
 	void should_ConstructorWithNameCreateEmptySet() {
 
 		// Arrange
-		UTF8SubsetSetName name = new UTF8SubsetSetName("Horst");
+		UTF8SubsetSetId name = new UTF8SubsetSetId("Horst");
 
 		// Act
 		TransliterableUTF8CharacterSet result = new TransliterableUTF8CharacterSet(name);
@@ -185,8 +186,7 @@ public class TransliterableUTF8CharacterSetTest {
 
 		final Map<String, String> transliterations = new HashMap<>();
 		provider.getItems().stream().forEach(item -> {
-			TransliterableUTF8Character transliterableChar = new TransliterableUTF8Character(
-					(DefaultCharacter) item);
+			TransliterableUTF8Character transliterableChar = new TransliterableUTF8Character((DefaultCharacter) item);
 			transliterations.put(transliterableChar.asUtf8(), transliterableChar.transliterated());
 		});
 
@@ -219,8 +219,7 @@ public class TransliterableUTF8CharacterSetTest {
 		MappableCharacterSet provider = createProviderFromXml("/veryShortCharset.xml");
 		final Map<String, String> transliterations = new HashMap<>();
 		provider.getItems().stream().forEach(item -> {
-			TransliterableUTF8Character transliterableChar = new TransliterableUTF8Character(
-					(DefaultCharacter) item);
+			TransliterableUTF8Character transliterableChar = new TransliterableUTF8Character((DefaultCharacter) item);
 
 			if (!transliterableChar.asUtf8().equals("C̀")) {
 				transliterations.put(transliterableChar.asUtf8(), transliterableChar.transliterated());
@@ -251,6 +250,37 @@ public class TransliterableUTF8CharacterSetTest {
 			assertEquals("items and transliterations need to be of same size", e.getMessage());
 		}
 	}
+
+	@Test
+	void should_PrintableTransliteratedCharacterReturnM_when_TwoCharsMWuthAcent() throws Exception {
+
+		// Act
+		TransliterableUTF8CharacterSet set = new TransliterableUTF8CharacterSetFactory().createCharacterSet();
+
+		// Assert
+		assertEquals("M", set.printableTransliteratedCharacter("M̂"));
+
+	}
+
+	@Test
+	void should_TransliterateWork_when_ComplicatedText() throws Exception {
+
+		// Arrange
+		TransliterableUTF8CharacterSet set = new TransliterableUTF8CharacterSetFactory().createCharacterSet();
+		String text = "ŝM̂sC̨̆Ö";
+		String expected = "SMSCOE";
+
+		// Act
+		String transliterated = set.transliterate(text);
+
+		// Assert
+		assertEquals(expected, transliterated);
+
+
+
+
+	}
+
 
 	/**
 	 * @param classPathResource

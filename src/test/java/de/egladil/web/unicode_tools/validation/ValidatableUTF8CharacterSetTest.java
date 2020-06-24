@@ -41,7 +41,7 @@ import javax.xml.bind.Unmarshaller;
 import org.junit.jupiter.api.Test;
 
 import de.egladil.web.unicode_tools.UTF8Codepoint;
-import de.egladil.web.unicode_tools.UTF8SubsetSetName;
+import de.egladil.web.unicode_tools.UTF8SubsetSetId;
 import de.egladil.web.unicode_tools.xml.DefaultCharacterSet;
 import de.egladil.web.unicode_tools.xml.mapping.MappableCharacter;
 import de.egladil.web.unicode_tools.xml.mapping.MappableCharacterSet;
@@ -153,7 +153,7 @@ public class ValidatableUTF8CharacterSetTest {
 	void should_ConstructorWithNameCreateEmptySet() {
 
 		// Arrange
-		UTF8SubsetSetName name = new UTF8SubsetSetName("Horst");
+		UTF8SubsetSetId name = new UTF8SubsetSetId("Horst");
 
 		// Act
 		ValidatableUTF8CharacterSet result = new ValidatableUTF8CharacterSet(name);
@@ -208,18 +208,18 @@ public class ValidatableUTF8CharacterSetTest {
 	@Test
 	void shouldIsPrintableCharacterValidReturnTrue_when_ParameterNull() {
 
-		assertTrue(new ValidatableUTF8CharacterSet(new UTF8SubsetSetName("Horst")).isPrintableCharacterValid(null));
+		assertTrue(new ValidatableUTF8CharacterSet(new UTF8SubsetSetId("Horst")).isPrintableCharacterValid(null));
 	}
 
 	@Test
 	void shouldIsPrintableCharacterValidReturnTrue_when_ParameterEmpty() {
 
-		assertTrue(new ValidatableUTF8CharacterSet(new UTF8SubsetSetName("Horst")).isPrintableCharacterValid(""));
+		assertTrue(new ValidatableUTF8CharacterSet(new UTF8SubsetSetId("Horst")).isPrintableCharacterValid(""));
 	}
 
 	@Test
 	void shouldIsUTF8CodepointValidReturnFalse_when_ParameterEmpty() {
 
-		assertFalse(new ValidatableUTF8CharacterSet(new UTF8SubsetSetName("Horst")).isUTF8CodepointValid(null));
+		assertFalse(new ValidatableUTF8CharacterSet(new UTF8SubsetSetId("Horst")).isUTF8CodepointValid(null));
 	}
 }

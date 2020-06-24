@@ -23,57 +23,19 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools;
-
-import org.apache.commons.lang3.StringUtils;
+package de.egladil.web.unicode_tools.transliteration;
 
 /**
- * UTF8SubsetSetName
+ * TransliterationProvider provides support for Transliteration of a given
+ * String based on some Mapping.
  */
-public class UTF8SubsetSetName {
-
-	private final String name;
+public interface TransliterationProvider {
 
 	/**
-	 * UTF8SubsetSetName
+	 *
+	 * @param givenText
+	 * @return String
 	 */
-	public UTF8SubsetSetName(String name) {
-		if (StringUtils.isBlank(name)) {
-			throw new IllegalArgumentException("name must not be blank");
-		}
-		this.name = name;
-	}
-
-	public String name() {
-		return this.name;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		UTF8SubsetSetName other = (UTF8SubsetSetName) obj;
-		return name.equals(other.name);
-	}
-
-	@Override
-	public String toString() {
-		return this.name;
-	}
+	String transliterate(String givenText);
 
 }

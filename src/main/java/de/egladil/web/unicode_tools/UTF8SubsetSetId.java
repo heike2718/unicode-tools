@@ -23,29 +23,57 @@
 // SOFTWARE.
 //=====================================================
 
-package de.egladil.web.unicode_tools.transliteration;
+package de.egladil.web.unicode_tools;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
- * CharacterTransliterationProvider provides some sort of transliteration for
- * some Character into another Character.
+ * UTF8SubsetSetId
  */
-@Deprecated
-public interface CharacterTransliterationProvider {
+public class UTF8SubsetSetId {
+
+	private final String name;
 
 	/**
-	 * Returns the transliteration as printable String of length 1 to which the
-	 * givenPrintableCharacter will be mapped according to the mapping that is
-	 * defined by some CharcterSet.
-	 *
-	 * @param givenPrintableCharacter String
-	 * @return String or null, if givenPrintableCharacter is not contained.
+	 * UTF8SubsetSetId
 	 */
-	String printableTransliteratedCharacter(String givenPrintableCharacter);
+	public UTF8SubsetSetId(String name) {
+		if (StringUtils.isBlank(name)) {
+			throw new IllegalArgumentException("name must not be blank");
+		}
+		this.name = name;
+	}
 
-	/**
-	 * Gibt den Namen zurück fürs Logging.
-	 *
-	 * @return String
-	 */
-	String name();
+	public String name() {
+		return this.name;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		UTF8SubsetSetId other = (UTF8SubsetSetId) obj;
+		return name.equals(other.name);
+	}
+
+	@Override
+	public String toString() {
+		return this.name;
+	}
+
 }
